@@ -115,11 +115,11 @@ au FileType php setl foldlevel=99
 " MacVim Specific options
 if has("gui_macvim")
     set transp=1
-    set anti enc=utf-8 tenc=macroman gfn=Menlo:h14,Anonymous\ Pro:h14:Monaco:h14
+    set anti enc=utf-8 tenc=macroman gfn=Menlo:h14,Monaco:h14
 endif
 
 " Windows Specific options
 if has("win32")
     set backupdir=c:\temp,.
-    set guifont=Consolas:h13:cANSI,Anonymous\ Pro:h13:cANSI,Courier\ New:h13:cANSI
+    set guifont=Consolas:h13:cANSI,Anonymous\ Pro:h13:cANSI
 endif
