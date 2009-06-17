@@ -22,7 +22,7 @@ task :install do
   rc = "vimrc"
   folder = "vimfiles"
   print "This operation will remove any existing Vim configuration. Continue? "
-  if gets[0].chr.downcase == "y"
+  if STDIN.gets[0].chr.downcase == "y"
     if windows?
       puts "This doesn't do anything for windows yet"
     else
