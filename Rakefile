@@ -21,7 +21,7 @@ task :install do
         rm_rf(there)
         ln_s(here, there, :force => true)
       rescue NotImplementedError => e
-	File.directory?(here) ? cp_r(here, home) : cp(here, there)
+        File.directory?(here) ? cp_r(here, home) : cp(here, there)
       end
     end
     puts "Installed Vim configuration."
