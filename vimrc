@@ -120,6 +120,9 @@ endif
 
 " Windows Specific options
 if has("win32")
+    " Use CUA keystrokes for clipboard: CTRL-X, CTRL-C, CTRL-V and CTRL-z
+    source $VIMRUNTIME/mswin.vim
+
     set backupdir=c:\temp,.
     set guifont=Consolas:h13:cANSI,Anonymous\ Pro:h13:cANSI
 endif
