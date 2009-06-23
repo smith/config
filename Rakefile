@@ -14,6 +14,8 @@ task :install do
 
     map.each_pair do |here, there|
       home = ENV["HOME"]
+      raise RuntimeError.new("Could not find a home directory. Make sure the HOME environment variable is set. Exiting with no updates") if !home
+      
       here = File.join(Dir.getwd, here)
       there = File.join(home, there)
 
