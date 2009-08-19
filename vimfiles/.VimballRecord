@@ -1,0 +1,1 @@
+download_script.php?src_id=7685: call delete('/home/smith/.vim/tail_options.vim')|call delete('/home/smith/.vim/autoload/tail.vim')|call delete('/home/smith/.vim/doc/tail.txt')|call delete('/home/smith/.vim/macros/vim-tail.zsh')|call delete('/home/smith/.vim/plugin/tail.vim')
