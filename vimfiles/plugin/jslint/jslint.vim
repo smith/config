@@ -1,3 +1,24 @@
+
+" Global Options
+"
+" Enable/Disable highlighting of errors in source.
+" Default is Enable
+" To disable the highlighting put the line
+" let g:JSLintHighlightErrorLine = 0
+" in your .vimrc
+if !exists("g:JSLintHighlightErrorLine")
+  let g:JSLintHighlightErrorLine = 1
+endif
+
+function! s:JSLintClear()
+  " Delete previous matches
+  if exists('b:errors')
+    for error in b:errors
+      call matchdelete(error)
+    endfor
+  endif
+endfunction
+
 function! s:JSLint(args) range
   cclose " Close quickfix window
   cexpr [] " Create empty quickfix list
@@ -25,14 +46,24 @@ function! s:JSLint(args) range
     let s:plugin_path = s:plugin_path . "vimfiles"
     let s:runjslint_ext = 'wsf'
   else
-    let s:cmd = 'js'
+    if has("gui_macvim") && filereadable('/System/Library/Frameworks/JavaScriptCore.framework/Resources/jsc')
+      let s:cmd = '/System/Library/Frameworks/JavaScriptCore.framework/Resources/jsc'
+    else
+      let s:cmd = 'js'
+    endif
     let s:plugin_path = s:plugin_path . ".vim"
     let s:runjslint_ext = 'js'
   endif
   let s:plugin_path = s:plugin_path . "/plugin/jslint/"
   let s:cmd = "cd " . s:plugin_path . " && " . s:cmd . " " . s:plugin_path 
                \ . "runjslint." . s:runjslint_ext
-  let b:jslint_output = system(s:cmd, join(getline(b:firstline, b:lastline), 
+  let s:jslintrc_file = expand('~/.jslintrc')
+  if filereadable(s:jslintrc_file)
+    let s:jslintrc = readfile(s:jslintrc_file)
+  else
+    let s:jslintrc = []
+  end
+  let b:jslint_output = system(s:cmd, join(s:jslintrc + getline(b:firstline, b:lastline),
               \ "\n") . "\n")
 
   let b:errors = []
@@ -44,13 +75,15 @@ function! s:JSLint(args) range
     let b:parts = matchlist(error, "\\(\\d\\+\\):\\(\\d\\+\\):\\(.*\\)")
     if !empty(b:parts)
       let b:has_errors = 1
-      let l:line = b:parts[1] + (b:firstline - 1) " Get line relative to selection
+      let l:line = b:parts[1] + (b:firstline - 1 - len(s:jslintrc)) " Get line relative to selection
       " Add line to match list
-      call add(b:errors, matchadd('Error', '\%' . l:line . 'l'))
+	  if g:JSLintHighlightErrorLine == 1
+	    call add(b:errors, matchadd('Error', '\%' . l:line . 'l'))
+	  endif
 
       " Store the error for an error under the cursor
       if l:line == line('.')
-         let b:error_under_cursor = 'Line '. l:line .': '.b:parts[3]
+        let b:error_under_cursor = 'Line '. l:line .': '.b:parts[3]
       endif
 
       " Add to quickfix
@@ -74,4 +107,6 @@ endfunction
 command! -range JSLintLight <line1>,<line2>call s:JSLint("echo")
 " Highlight errors and open quick fix window
 command! -range JSLint <line1>,<line2>call s:JSLint("qf")
+" Un Highlight errors
+command! JSLintClear call s:JSLintClear()
 
