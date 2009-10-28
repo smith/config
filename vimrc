@@ -1,4 +1,4 @@
-" Nathan L Smith's .vimrc file. Based on John Lam's .vimrc file
+" Nathan L Smith's .vimrc
 " http://github.com/smith/vim-config/
 
 syntax on
@@ -24,31 +24,25 @@ au BufWrite *vimrc source %
 
 " Tabs
 set expandtab
-set shiftwidth=4
-set softtabstop=4
-set tabstop=4
+set shiftwidth=2
+set softtabstop=2
+set tabstop=2
 
-" Key mapping
-map ,# :s/^/#/<CR>
-map <M-]> :tabnext<CR>
-map <M-[> :tabprevious<CR>
-map <M-t> :tabnew<CR>
-imap <M-]> :tabnext<CR>
-imap <M-[> :tabprevious<CR>
-imap <M-t> :tabnew<CR>
+" Key Mapping
+" TODO: Nothing to see here
 
 " GUI options
 if has("gui_running")
-    " No menus and no toolbar
-    set guioptions-=m
-    set guioptions-=T
+  " No menus and no toolbar
+  set guioptions-=m
+  set guioptions-=T
 
-    " Left handed scrollbar
-    set guioptions-=r
-    set guioptions+=l
+  " Left handed scrollbar
+  set guioptions-=r
+  set guioptions+=l
 
-    set co=80
-    set lines=45
+  set co=80
+  set lines=45
 endif
 
 " Appearance
@@ -81,24 +75,30 @@ highlight ExtraWhitespace guibg=Red ctermbg=Red
 au BufWinEnter * match ExtraWhitespace /\s\+$\| \+\ze\t/
 au BufWrite * match ExtraWhitespace /\s\+$\| \+\ze\t/
 
-" Ruby
-function! RubyEndToken ()
-  let current_line = getline( '.' )
-  let braces_at_end = '{\s*\(|\(,\|\s\|\w\)*|\s*\)\?$'
-  let stuff_without_do = '^\s*\(class\|if\|unless\|begin\|case\|for\|module\|while\|until\|def\)'
-  let with_do = 'do\s*\(|\(,\|\s\|\w\)*|\s*\)\?$'
-  if match(current_line, braces_at_end) >= 0
-    return "\<CR>}\<C-O>O"
-  elseif match(current_line, stuff_without_do) >= 0
-    return "\<CR>end\<C-O>O"
-  elseif match(current_line, with_do) >= 0
-    return "\<CR>end\<C-O>O"
-  else
-    return "\<CR>"
-  endif
+function! Indent4Spaces()
+  set tabstop=4
+  set softtabstop=4
+  set shiftwidth=4
 endfunction
 
+" Ruby
 function! UseRubyIndent ()
+  function! RubyEndToken ()
+    let current_line = getline( '.' )
+    let braces_at_end = '{\s*\(|\(,\|\s\|\w\)*|\s*\)\?$'
+    let stuff_without_do = '^\s*\(class\|if\|unless\|begin\|case\|for\|module\|while\|until\|def\)'
+    let with_do = 'do\s*\(|\(,\|\s\|\w\)*|\s*\)\?$'
+    if match(current_line, braces_at_end) >= 0
+      return "\<CR>}\<C-O>O"
+    elseif match(current_line, stuff_without_do) >= 0
+      return "\<CR>end\<C-O>O"
+    elseif match(current_line, with_do) >= 0
+      return "\<CR>end\<C-O>O"
+    else
+      return "\<CR>"
+    endif
+  endfunction
+
   setlocal tabstop=2
   setlocal softtabstop=2
   setlocal shiftwidth=2
@@ -107,31 +107,38 @@ endfunction
 au FileType ruby,eruby call UseRubyIndent()
 
 " Use ruby syntax for capfiles
-au BufNewFile, BufRead capfile setf ruby
+" FIXME: These don't work and I don't know why
+au BufNewFile, BufRead Capfile setf ruby
+au BufNewFile, BufRead .caprc setf ruby
 
-" JavaScript folding
+" JavaScript
 function! JavaScriptFold()
-    setl foldmethod=syntax
-    setl foldlevelstart=99
-    syn region foldBraces start=/{/ end=/}/ transparent fold keepend extend
+  setl foldmethod=syntax
+  setl foldlevelstart=99
+  syn region foldBraces start=/{/ end=/}/ transparent fold keepend extend
 
-    function! FoldText()
-        return substitute(getline(v:foldstart), '{.*', '{...}', '')
-    endfunction
-    setl foldtext=FoldText()
+  function! FoldText()
+    return substitute(getline(v:foldstart), '{.*', '{...}', '')
+  endfunction
+  setl foldtext=FoldText()
 endfunction
+
+au FileType javascript call Indent4Spaces()
 au FileType javascript call JavaScriptFold()
 au FileType javascript setl fen
 au FileType javascript setl foldlevel=99
 
-" PHP folding
+" PHP
 let php_folding=1
+au FileType php call Indent4Spaces()
 au FileType php setl foldlevel=99
 
 " MacVim
 if has("gui_macvim")
     set transp=1
-    set anti enc=utf-8 tenc=macroman gfn=Menlo:h14,Monaco:h14
+    set anti enc=utf-8 gfn=Menlo:h14,Monaco:h14
+    " MacVim seems to not source my vimrc
+    au BufRead * source ~/.vimrc
 endif
 
 " Windows
