@@ -52,7 +52,7 @@ set wrap
 set bg=dark
 set scrolloff=3
 
-highlight Normal guifg=White guibg=Black
+highlight Normal guifg=#888888 guibg=Black
 highlight Cursor guifg=Black guibg=Yellow
 highlight Keyword guifg=#FF6600
 highlight Define guifg=#FF6600
