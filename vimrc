@@ -28,8 +28,7 @@ set shiftwidth=2
 set softtabstop=2
 set tabstop=2
 
-" Key Mapping
-" TODO: Nothing to see here
+" Key Mapping : Nothing to see here
 
 " GUI options
 if has("gui_running")
@@ -52,26 +51,9 @@ set wrap
 set bg=dark
 set scrolloff=3
 
-highlight Normal guifg=#888888 guibg=Black
-highlight Cursor guifg=Black guibg=Yellow
-highlight Keyword guifg=#FF6600
-highlight Define guifg=#FF6600
-highlight Comment guifg=#9933CC
-highlight Type guifg=White gui=NONE
-highlight rubySymbol guifg=#339999 gui=NONE
-highlight Identifier guifg=White gui=NONE
-highlight rubyStringDelimiter guifg=#66FF00
-highlight rubyInterpolation guifg=White
-highlight rubyPseudoVariable guifg=#339999
-highlight Constant guifg=#FFEE98
-highlight Function guifg=#FFCC00 gui=NONE
-highlight Include guifg=#FFCC00 gui=NONE
-highlight Statement guifg=#FF6600 gui=NONE
-highlight String guifg=#66FF00
-highlight Search guibg=White
-highlight ExtraWhitespace guibg=Red ctermbg=Red
-
 " Highlight trailing whitespace
+highlight ExtraWhitespace guibg=Red ctermbg=Red
+au ColorScheme * highlight ExtraWhitespace guibg=Red ctermbg=Red
 au BufWinEnter * match ExtraWhitespace /\s\+$\| \+\ze\t/
 au BufWrite * match ExtraWhitespace /\s\+$\| \+\ze\t/
 
@@ -99,9 +81,6 @@ function! UseRubyIndent ()
     endif
   endfunction
 
-  setlocal tabstop=2
-  setlocal softtabstop=2
-  setlocal shiftwidth=2
   imap <buffer> <CR> <C-R>=RubyEndToken()<CR>
 endfunction
 au FileType ruby,eruby call UseRubyIndent()
@@ -112,6 +91,8 @@ au BufNewFile, BufRead Capfile setf ruby
 au BufNewFile, BufRead .caprc setf ruby
 
 " JavaScript
+" FIXME: This fails when you have Prototype.js style string inteporation like
+"        #{prop} in a string
 function! JavaScriptFold()
   setl foldmethod=syntax
   setl foldlevelstart=99
@@ -123,6 +104,8 @@ function! JavaScriptFold()
   setl foldtext=FoldText()
 endfunction
 
+" FIXME: When js in rails projects is being edited, it uses 2 spaces. Figure
+"        out how to not have rails.vim override this
 au FileType javascript call Indent4Spaces()
 au FileType javascript call JavaScriptFold()
 au FileType javascript setl fen
@@ -137,8 +120,6 @@ au FileType php setl foldlevel=99
 if has("gui_macvim")
     set transp=1
     set anti enc=utf-8 gfn=Menlo:h14,Monaco:h14
-    " MacVim seems to not source my vimrc
-    au BufRead * source ~/.vimrc
 endif
 
 " Windows
