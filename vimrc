@@ -19,9 +19,6 @@ set backupdir=/tmp
 set history=1000
 set shortmess=at
 
-" Reload vimrc after editing it
-au BufWrite *vimrc source %
-
 " Tabs
 set expandtab
 set shiftwidth=2
@@ -48,7 +45,6 @@ endif
 set ruler
 set title
 set wrap
-set bg=dark
 set scrolloff=3
 
 " Highlight trailing whitespace
