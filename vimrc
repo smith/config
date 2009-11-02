@@ -46,6 +46,7 @@ set ruler
 set title
 set wrap
 set scrolloff=3
+colorscheme desert
 
 " Highlight trailing whitespace
 highlight ExtraWhitespace guibg=Red ctermbg=Red
