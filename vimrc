@@ -49,8 +49,8 @@ set scrolloff=3
 colorscheme desert
 
 " Highlight trailing whitespace
-highlight ExtraWhitespace guibg=Red ctermbg=Red
-au ColorScheme * highlight ExtraWhitespace guibg=Red ctermbg=Red
+highlight ExtraWhitespace guibg=DarkCyan ctermbg=Blue
+au ColorScheme * highlight ExtraWhitespace guibg=DarkCyan ctermbg=Blue
 au BufWinEnter * match ExtraWhitespace /\s\+$\| \+\ze\t/
 au BufWrite * match ExtraWhitespace /\s\+$\| \+\ze\t/
 
