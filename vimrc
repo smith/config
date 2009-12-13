@@ -61,26 +61,6 @@ function! Indent4Spaces()
 endfunction
 
 " Ruby
-function! UseRubyIndent ()
-  function! RubyEndToken ()
-    let current_line = getline( '.' )
-    let braces_at_end = '{\s*\(|\(,\|\s\|\w\)*|\s*\)\?$'
-    let stuff_without_do = '^\s*\(class\|if\|unless\|begin\|case\|for\|module\|while\|until\|def\)'
-    let with_do = 'do\s*\(|\(,\|\s\|\w\)*|\s*\)\?$'
-    if match(current_line, braces_at_end) >= 0
-      return "\<CR>}\<C-O>O"
-    elseif match(current_line, stuff_without_do) >= 0
-      return "\<CR>end\<C-O>O"
-    elseif match(current_line, with_do) >= 0
-      return "\<CR>end\<C-O>O"
-    else
-      return "\<CR>"
-    endif
-  endfunction
-
-  imap <buffer> <CR> <C-R>=RubyEndToken()<CR>
-endfunction
-au FileType ruby,eruby call UseRubyIndent()
 
 " Use ruby syntax for capfiles
 " FIXME: These don't work and I don't know why
