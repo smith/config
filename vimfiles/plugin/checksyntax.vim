@@ -12,7 +12,7 @@ let g:checksyntax = 6
 
 
 augroup CheckSyntax
-    autocmd!
+    "autocmd!
 augroup END
 
 
@@ -67,7 +67,7 @@ if !exists('g:checksyntax_alt_php')
     let g:checksyntax_alt_php = 'phpp'
 endif
 
-autocmd CheckSyntax BufReadPost *.php if exists(':EclimValidate') && !empty(eclim#project#util#GetCurrentProjectName()) | let b:checksyntax_auto_php = 0 | let b:checksyntax_auto_phpp = 0 | endif
+"autocmd CheckSyntax BufReadPost *.php if exists(':EclimValidate') && !empty(eclim#project#util#GetCurrentProjectName()) | let b:checksyntax_auto_php = 0 | let b:checksyntax_auto_phpp = 0 | endif
 
 
 """ JavaScript specific
@@ -340,7 +340,7 @@ if !hasmapto(':CheckSyntax')
 endif
 
 if g:checksyntax_auto
-    autocmd CheckSyntax BufWritePost * call CheckSyntax(0)
+    "autocmd CheckSyntax BufWritePost * call CheckSyntax(0)
 endif
 
 
