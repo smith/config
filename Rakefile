@@ -2,13 +2,14 @@
 require 'fileutils'
 include FileUtils
 
+is_windows = !ENV["windir"].nil?
+
 task :default => [:install]
 
 desc "Install configuration files"
 task :install do
   print "This operation will remove any existing Vim configuration. Continue? "
   if STDIN.gets[0].chr.downcase == "y"
-    is_windows = !ENV["windir"].nil?
     map = { "vimrc"    => is_windows ? "_vimrc"   : ".vimrc",
             "vimfiles" => is_windows ? "vimfiles" : ".vim" }
 
@@ -29,5 +30,15 @@ task :install do
     puts "Installed Vim configuration."
   else
     puts "Exiting with no updates."
+  end
+end
+
+desc "Install non-vim config files"
+task :install_extra do
+  if !is_windows
+    Dir.glob("extra/*").each do |f|
+      dest = File.join(ENV["HOME"], ".#{File.basename(f)}")
+      ln_s(File.expand_path(f), dest, :force => true)
+    end
   end
 end
