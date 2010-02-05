@@ -1,0 +1,8 @@
+require "rubygems"
+["looksee/shortcuts", "utility_belt"].each do |g|
+  begin
+    require g
+  rescue LoadError
+    puts "WARNING: #{g} is not installed."
+  end
+end
