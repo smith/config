@@ -1,11 +1,9 @@
 " autoload/rails.vim
-" Author:       Tim Pope <vimNOSPAM@tpope.info>
+" Author:       Tim Pope <vimNOSPAM@tpope.org>
 
 " Install this file as autoload/rails.vim.  This file is sourced manually by
 " plugin/rails.vim.  It is in autoload directory to allow for future usage of
 " Vim 7's autoload feature.
-
-" ============================================================================
 
 " Exit quickly when:
 " - this plugin was already loaded (or disabled)
@@ -13,7 +11,7 @@
 if &cp || exists("g:autoloaded_rails")
   finish
 endif
-let g:autoloaded_rails = '4.0'
+let g:autoloaded_rails = '4.1'
 
 let s:cpo_save = &cpo
 set cpo&vim
@@ -268,9 +266,9 @@ function! s:lastmethod(...)
 endfunction
 
 function! s:readable_last_format(start) dict abort
-  let rline = self.last_opening_line('\C^\s*respond_to\s*\%(\<do\)\s*|\zs\h\k*\ze|',self.last_method_line(a:start),a:start)
+  let rline = self.last_opening_line(a:start,'\C^\s*\%(mail\>.*\|respond_to\)\s*\%(\<do\|{\)\s*|\zs\h\k*\ze|',self.last_method_line(a:start))
   if rline
-    let variable = matchstr(self.getline(rline),'\C^\s*respond_to\s*\%(\<do\|{\)\s*|\zs\h\k*\ze|')
+    let variable = matchstr(self.getline(rline),'\C^\s*\%(mail\>.*\|respond_to\)\s*\%(\<do\|{\)\s*|\zs\h\k*\ze|')
     let line = a:start
     while line > rline
       let match = matchstr(self.getline(line),'\C^\s*'.variable.'\s*\.\s*\zs\h\k*')
@@ -323,6 +321,8 @@ function! s:readable_controller_name(...) dict abort
     return s:sub(f,'.*<app/helpers/(.{-})_helper\.rb$','\1')
   elseif f =~ '\<app/controllers/.*\.rb$'
     return s:sub(f,'.*<app/controllers/(.{-})%(_controller)=\.rb$','\1')
+  elseif f =~ '\<app/mailers/.*\.rb$'
+    return s:sub(f,'.*<app/mailers/(.{-})\.rb$','\1')
   elseif f =~ '\<app/apis/.*_api\.rb$'
     return s:sub(f,'.*<app/apis/(.{-})_api\.rb$','\1')
   elseif f =~ '\<test/functional/.*_test\.rb$'
@@ -337,7 +337,7 @@ function! s:readable_controller_name(...) dict abort
     return s:sub(f,'.*<components/(.{-})_controller\.rb$','\1')
   elseif f =~ '\<components/.*\.'.s:viewspattern().'$'
     return s:sub(f,'.*<components/(.{-})/\k+\.\k+$','\1')
-  elseif f =~ '\<app/models/.*\.rb$' && self.type_name('model-mailer')
+  elseif f =~ '\<app/models/.*\.rb$' && self.type_name('mailer')
     return s:sub(f,'.*<app/models/(.{-})\.rb$','\1')
   elseif f =~ '\<public/stylesheets/.*\.css$'
     return s:sub(f,'.*<public/stylesheets/(.{-})\.css$','\1')
@@ -651,17 +651,21 @@ function! s:readable_calculate_file_type() dict abort
     let r = "helper"
   elseif f =~ '\<app/metal/.*\.rb$'
     let r = "metal"
-  elseif f =~ '\<app/models\>'
+  elseif f =~ '\<app/mailers/.*\.rb'
+    let r = "mailer"
+  elseif f =~ '\<app/models/'
     let top = join(s:readfile(full_path,50),"\n")
     let class = matchstr(top,'\<Acti\w\w\u\w\+\%(::\h\w*\)\+\>')
     if class == "ActiveResource::Base"
       let class = "ares"
       let r = "model-ares"
+    elseif class == 'ActionMailer::Base'
+      let r = "mailer"
     elseif class != ''
       let class = tolower(s:gsub(class,'[^A-Z]',''))
-      let r = "model-".s:sub(class,'^amb>','mailer')
+      let r = "model-".class
     elseif f =~ '_mailer\.rb$'
-      let r = "model-mailer"
+      let r = "mailer"
     elseif top =~ '\<\%(validates_\w\+_of\|set_\%(table_name\|primary_key\)\|has_one\|has_many\|belongs_to\)\>'
       let r = "model-arb"
     else
@@ -795,8 +799,17 @@ function! s:app_ruby_shell_command(cmd) dict abort
   endif
 endfunction
 
-function! s:app_background_ruby_command(cmd) dict abort
-  let cmd = s:esccmd(self.ruby_shell_command(a:cmd))
+function! s:app_script_shell_command(cmd) dict abort
+  if self.has_file('script/rails') && a:cmd !~# '^rails\>'
+    let cmd = 'script/rails '.a:cmd
+  else
+    let cmd = 'script/'.a:cmd
+  endif
+  return self.ruby_shell_command(cmd)
+endfunction
+
+function! s:app_background_script_command(cmd) dict abort
+  let cmd = s:esccmd(self.script_shell_command(a:cmd))
   if has_key(self,'options') && has_key(self.options,'gnu_screen')
     let screen = self.options.gnu_screen
   else
@@ -816,8 +829,8 @@ function! s:app_background_ruby_command(cmd) dict abort
   return v:shell_error
 endfunction
 
-function! s:app_execute_ruby_command(cmd) dict abort
-  exe "!".s:esccmd(self.ruby_shell_command(a:cmd))
+function! s:app_execute_script_command(cmd) dict abort
+  exe '!'.s:esccmd(self.script_shell_command(a:cmd))
   return v:shell_error
 endfunction
 
@@ -845,7 +858,7 @@ function! s:app_eval(ruby,...) dict abort
   return v:shell_error == 0 ? results : def
 endfunction
 
-call s:add_methods('app', ['ruby_shell_command','execute_ruby_command','background_ruby_command','lightweight_ruby_eval','eval'])
+call s:add_methods('app', ['ruby_shell_command','script_shell_command','execute_script_command','background_script_command','lightweight_ruby_eval','eval'])
 
 " }}}1
 " Commands {{{1
@@ -1210,11 +1223,11 @@ function! s:readable_default_rake_task(lnum) dict abort
     endif
   elseif t =~ '^spec\>'
     if self.name() =~# '\<spec/spec_helper\.rb$'
-      return 'spec SPEC_OPTS='
+      return 'spec'
     elseif lnum > 0
-      return 'spec SPEC="%:p" SPEC_OPTS=--line='.lnum
+      return 'spec SPEC="%:p":'.lnum
     else
-      return 'spec SPEC="%:p" SPEC_OPTS='
+      return 'spec SPEC="%:p"'
     endif
   elseif t =~ '^test\>'
     let meth = self.last_method(lnum)
@@ -1434,9 +1447,9 @@ function! s:app_script_command(bang,...) dict
     call self.cache.clear('generators')
   endif
   if a:bang || cmd =~# 'console'
-    return self.background_ruby_command(s:rquote("script/".cmd).str)
+    return self.background_script_command(cmd.str)
   else
-    return self.execute_ruby_command(s:rquote("script/".cmd).str)
+    return self.execute_script_command(cmd.str)
   endif
 endfunction
 
@@ -1495,19 +1508,19 @@ function! s:app_server_command(bang,arg) dict
     let screen = g:rails_gnu_screen
   endif
   if has("win32") || has("win64") || (exists("$STY") && !has("gui_running") && screen && executable("screen"))
-    call self.background_ruby_command(s:rquote("script/server")." ".a:arg)
+    call self.background_script_command('server '.a:arg)
   else
-    "--daemon would be more descriptive but lighttpd does not support it
-    call self.execute_ruby_command(s:rquote("script/server")." ".a:arg." -d")
+    " --daemon would be more descriptive but lighttpd does not support it
+    call self.execute_script_command('server '.a:arg." -d")
   endif
   call s:setopt('a:root_url','http://'.(bind=='0.0.0.0'?'localhost': bind).':'.port.'/')
 endfunction
 
 function! s:app_destroy_command(bang,...) dict
   if a:0 == 0
-    return self.execute_ruby_command("script/destroy")
+    return self.execute_script_command('destroy')
   elseif a:0 == 1
-    return self.execute_ruby_command("script/destroy ".s:rquote(a:1))
+    return self.execute_script_command('destroy '.s:rquote(a:1))
   endif
   let str = ""
   let c = 1
@@ -1515,34 +1528,30 @@ function! s:app_destroy_command(bang,...) dict
     let str .= " " . s:rquote(a:{c})
     let c += 1
   endwhile
-  call self.execute_ruby_command(s:rquote("script/destroy").str)
+  call self.execute_script_command('destroy'.str)
   call self.cache.clear('user_classes')
 endfunction
 
 function! s:app_generate_command(bang,...) dict
   if a:0 == 0
-    return self.execute_ruby_command("script/generate")
+    return self.execute_script_command('generate')
   elseif a:0 == 1
-    return self.execute_ruby_command("script/generate ".s:rquote(a:1))
+    return self.execute_script_command('generate '.s:rquote(a:1))
   endif
-  let target = s:rquote(a:1)
-  let str = ""
-  let c = 2
-  while c <= a:0
-    let str .= " " . s:rquote(a:{c})
-    let c += 1
-  endwhile
-  if str !~ '-p\>' && str !~ '--pretend\>'
-    let execstr = self.ruby_shell_command('-r./config/boot -e "require '."'commands/generate'".'" -- '.target." -p -f".str)
+  let cmd = join(map(copy(a:000),'s:rquote(v:val)'),' ')
+  if cmd !~ '-p\>' && cmd !~ '--pretend\>'
+    let execstr = self.script_shell_command('generate '.cmd.' -p -f')
     let res = system(execstr)
-    let file = matchstr(res,'\s\+\%(create\|force\)\s\+\zs\f\+\.rb\ze\n')
+    let g:res = res
+    let junk = '\%(\e\[[0-9;]*m\)\='
+    let file = matchstr(res,junk.'\s\+\%(create\|force\)'.junk.'\s\+\zs\f\+\.rb\ze\n')
     if file == ""
-      let file = matchstr(res,'\s\+\%(exists\)\s\+\zs\f\+\.rb\ze\n')
+      let file = matchstr(res,junk.'\s\+\%(identical\)'.junk.'\s\+\zs\f\+\.rb\ze\n')
     endif
   else
     let file = ""
   endif
-  if !self.execute_ruby_command("script/generate ".target.str) && file != ""
+  if !self.execute_script_command('generate '.cmd) && file != ''
     call self.cache.clear('user_classes')
     call self.cache.clear('features')
     if file =~ '^db/migrate/\d\d\d\d'
@@ -1556,7 +1565,6 @@ call s:add_methods('app', ['generators','script_command','runner_command','serve
 
 function! s:Complete_script(ArgLead,CmdLine,P)
   let cmd = s:sub(a:CmdLine,'^\u\w*\s+','')
-  "let P = a:P - strlen(a:CmdLine)+strlen(cmd)
   if cmd !~ '^[ A-Za-z0-9_=:-]*$'
     return []
   elseif cmd =~# '^\w*$'
@@ -1681,7 +1689,7 @@ function! s:djump(def)
     let v:errmsg = ''
     silent! exe "djump ".def
     if ext != '' && (v:errmsg == '' || v:errmsg =~ '^E387')
-      let rpat = '\C^\s*respond_to\s*\%(\<do\|{\)\s*|\zs\h\k*\ze|'
+      let rpat = '\C^\s*\%(mail\>.*\|respond_to\)\s*\%(\<do\|{\)\s*|\zs\h\k*\ze|'
       let end = s:endof(line('.'))
       let rline = search(rpat,'',end)
       if rline > 0
@@ -1734,7 +1742,7 @@ function! s:Edit(count,cmd,...)
 endfunction
 
 function! s:fuzzyglob(arg)
-  return '*'.s:gsub(s:gsub(a:arg,'[^/]','[&]*'),'/','/*')
+  return s:gsub(s:gsub(a:arg,'[^/.]','[&]*'),'%(/|^)\.@!|\.','&*')
 endfunction
 
 function! s:Complete_find(ArgLead, CmdLine, CursorPos)
@@ -1851,11 +1859,20 @@ function! s:RailsFind()
     return RailsFilePath() =~ '\<spec/' ? 'spec/'.res : res
   endif
 
-  let res = s:findamethod('map\.resources','app/controllers/\1_controller.rb')
+  let res = s:findamethod('\%(\w\+\.\)\=resources','app/controllers/\1_controller.rb')
   if res != ""|return res|endif
 
-  let res = s:findamethod('map\.resource','app/controllers/\1')
+  let res = s:findamethod('\%(\w\+\.\)\=resource','app/controllers/\1')
   if res != ""|return rails#pluralize(res)."_controller.rb"|endif
+
+  let res = s:findasymbol('to','app/controllers/\1')
+  if res =~ '#'|return s:sub(res,'#','_controller.rb#')|endif
+
+  let res = s:findamethod('root\s*:to\s*=>\s*','app/controllers/\1')
+  if res =~ '#'|return s:sub(res,'#','_controller.rb#')|endif
+
+  let res = s:findamethod('\%(match\|get\|put\|post\|delete\|redirect\)\s*(\=\s*[:''"][^''"]*[''"]\=\s*\%(,\s*:to\s*\)\==>\s*','app/controllers/\1')
+  if res =~ '#'|return s:sub(res,'#','_controller.rb#')|endif
 
   let res = s:findamethod('layout','\=s:findlayout(submatch(1))')
   if res != ""|return res|endif
@@ -1912,7 +1929,7 @@ function! s:RailsFind()
 
   let old_isfname = &isfname
   try
-    set isfname=@,48-57,/,-,_,: ",\",'
+    set isfname=@,48-57,/,-,_,:,#
     " TODO: grab visual selection in visual mode
     let cfile = expand("<cfile>")
   finally
@@ -1974,6 +1991,8 @@ function! s:RailsIncludefind(str,...)
   let str = s:gsub(str,"[\"']",'')
   if line =~# '\<\(require\|load\)\s*(\s*$'
     return str
+  elseif str =~# '\l\w*#\w\+'
+    return 'app/controllers/'.s:sub(str,'#','_controller.rb#')
   endif
   let str = rails#underscore(str)
   let fpat = '\(\s*\%("\f*"\|:\f*\|'."'\\f*'".'\)\s*,\s*\)*'
@@ -2024,9 +2043,11 @@ function! s:RailsIncludefind(str,...)
         break
       endif
     endwhile
-  elseif str =~# '_\%(path\|url\)$'
-    let str = s:sub(str,'_%(path|url)$','')
-    let str = s:sub(str,'^hash_for_','')
+  elseif str =~# '_\%(path\|url\)$' || (line =~# ':as\s*=>\s*$' && RailsFileType() =~# '^config-routes\>')
+    if line !~# ':as\s*=>\s*$'
+      let str = s:sub(str,'_%(path|url)$','')
+      let str = s:sub(str,'^hash_for_','')
+    endif
     let file = rails#app().named_route_file(str)
     if file == ""
       let str = s:sub(str,'^formatted_','')
@@ -2756,7 +2777,11 @@ function! s:libEdit(cmd,...)
 endfunction
 
 function! s:environmentEdit(cmd,...)
-  return s:EditSimpleRb(a:cmd,"environment",a:0? a:1 : "../environment","config/environments/",".rb")
+  if a:0 || rails#app().has_file('config/application.rb')
+    return s:EditSimpleRb(a:cmd,"environment",a:0? a:1 : "../application","config/environments/",".rb")
+  else
+    return s:EditSimpleRb(a:cmd,"environment","environment","config/",".rb")
+  endif
 endfunction
 
 function! s:initializerEdit(cmd,...)
@@ -2905,8 +2930,8 @@ function! s:readable_related(...) dict abort
   let t = self.type_name()
   if a:0 && a:1
     let lastmethod = self.last_method(a:1)
-    if t =~ '^\%(controller\|model-mailer\)\>' && lastmethod != ""
-      let root = s:sub(s:sub(s:sub(f,'/application\.rb$','/shared_controller.rb'),'/%(controllers|models)/','/views/'),'%(_controller)=\.rb$','/'.lastmethod)
+    if t =~ '^\%(controller\|mailer\)\>' && lastmethod != ""
+      let root = s:sub(s:sub(s:sub(f,'/application%(_controller)=\.rb$','/shared_controller.rb'),'/%(controllers|models|mailers)/','/views/'),'%(_controller)=\.rb$','/'.lastmethod)
       let format = self.last_format(a:1)
       if format == '' | let format = 'html' | endif
       if glob(self.app().path().'/'.root.'.'.format.'.*[^~]') != ''
@@ -2929,11 +2954,14 @@ function! s:readable_related(...) dict abort
     elseif t =~ '^view\>'
       let controller  = s:sub(s:sub(f,'/views/','/controllers/'),'/(\k+%(\.\k+)=)\..*$','_controller.rb#\1')
       let controller2 = s:sub(s:sub(f,'/views/','/controllers/'),'/(\k+%(\.\k+)=)\..*$','.rb#\1')
+      let mailer      = s:sub(s:sub(f,'/views/','/mailers/'),'/(\k+%(\.\k+)=)\..*$','.rb#\1')
       let model       = s:sub(s:sub(f,'/views/','/models/'),'/(\k+)\..*$','.rb#\1')
       if self.app().has_file(s:sub(controller,'#.{-}$',''))
         return controller
       elseif self.app().has_file(s:sub(controller2,'#.{-}$',''))
         return controller2
+      elseif self.app().has_file(s:sub(mailer,'#.{-}$',''))
+        return mailer
       elseif self.app().has_file(s:sub(model,'#.{-}$','')) || model =~ '_mailer\.rb#'
         return model
       else
@@ -3402,7 +3430,7 @@ function! s:helpermethods()
         \."number_to_currency number_to_human_size number_to_percentage number_to_phone number_with_delimiter number_with_precision "
         \."observe_field observe_form option_groups_from_collection_for_select options_for_select options_from_collection_for_select "
         \."partial_path password_field password_field_tag path_to_image path_to_javascript path_to_stylesheet periodically_call_remote pluralize "
-        \."radio_button radio_button_tag remote_form_for remote_function reset_cycle "
+        \."radio_button radio_button_tag raw remote_form_for remote_function reset_cycle "
         \."sanitize sanitize_css select select_date select_datetime select_day select_hour select_minute select_month select_second select_tag select_time select_year simple_format sortable_element sortable_element_js strip_links strip_tags stylesheet_link_tag stylesheet_path submit_tag submit_to_remote "
         \."t tag text_area text_area_tag text_field text_field_tag textilize textilize_without_paragraph time_ago_in_words time_select time_zone_options_for_select time_zone_select translate truncate "
         \."update_page update_page_tag url_for "
@@ -3456,20 +3484,21 @@ function! s:BufSyntax()
         syn keyword rubyRailsAPIMethod api_method inflect_names
       endif
       if t =~ '^model$' || t =~ '^model-arb\>'
-        syn keyword rubyRailsARMethod default_scope named_scope serialize
+        syn keyword rubyRailsARMethod default_scope named_scope scope serialize
         syn keyword rubyRailsARAssociationMethod belongs_to has_one has_many has_and_belongs_to_many composed_of accepts_nested_attributes_for
         syn keyword rubyRailsARCallbackMethod before_create before_destroy before_save before_update before_validation before_validation_on_create before_validation_on_update
         syn keyword rubyRailsARCallbackMethod after_create after_destroy after_save after_update after_validation after_validation_on_create after_validation_on_update
         syn keyword rubyRailsARClassMethod attr_accessible attr_protected establish_connection set_inheritance_column set_locking_column set_primary_key set_sequence_name set_table_name
-        syn keyword rubyRailsARValidationMethod validate validate_on_create validate_on_update validates_acceptance_of validates_associated validates_confirmation_of validates_each validates_exclusion_of validates_format_of validates_inclusion_of validates_length_of validates_numericality_of validates_presence_of validates_size_of validates_uniqueness_of
+        syn keyword rubyRailsARValidationMethod validate validates validate_on_create validate_on_update validates_acceptance_of validates_associated validates_confirmation_of validates_each validates_exclusion_of validates_format_of validates_inclusion_of validates_length_of validates_numericality_of validates_presence_of validates_size_of validates_uniqueness_of
         syn keyword rubyRailsMethod logger
       endif
       if t =~ '^model-aro\>'
         syn keyword rubyRailsARMethod observe
       endif
-      if t =~ '^model-mailer\>'
-        syn keyword rubyRailsMethod logger
-        syn keyword rubyRailsControllerMethod helper helper_attr helper_method
+      if t =~ '^mailer\>'
+        syn keyword rubyRailsMethod logger attachments
+        syn keyword rubyRailsRenderMethod mail render
+        syn keyword rubyRailsControllerMethod default helper helper_attr helper_method
       endif
       if t =~ '^controller\>' || t =~ '^view\>' || t=~ '^helper\>'
         syn keyword rubyRailsMethod params request response session headers cookies flash
@@ -3521,7 +3550,8 @@ function! s:BufSyntax()
         syn keyword rubyRailsMethod member
       endif
       if t =~ '^config-routes\>'
-        syn match rubyRailsMethod '\.\zs\%(connect\|resources\=\|root\|named_route\|namespace\)\>'
+        syn match rubyRailsMethod '\.\zs\%(connect\|named_route\)\>'
+        syn keyword rubyRailsMethod match get put post delete redirect root resource resources collection member nested scope namespace controller constraints
       endif
       syn keyword rubyRailsMethod debugger
       syn keyword rubyRailsMethod alias_attribute alias_method_chain attr_accessor_with_default attr_internal attr_internal_accessor attr_internal_reader attr_internal_writer delegate mattr_accessor mattr_reader mattr_writer superclass_delegating_accessor superclass_delegating_reader superclass_delegating_writer
@@ -4505,7 +4535,8 @@ function! s:SetBasePath()
     return
   endif
   let transformed_path = s:pathsplit(s:pathjoin([self.app().path()]))[0]
-  let old_path = s:pathsplit(s:sub(self.getvar('&path'),'^\.,=',''))
+  let add_dot = self.getvar('&path') =~# '^\.\%(,\|$\)'
+  let old_path = s:pathsplit(s:sub(self.getvar('&path'),'^\.%(,|$)',''))
   call filter(old_path,'!s:startswith(v:val,transformed_path)')
 
   let path = ['app', 'app/models', 'app/controllers', 'app/helpers', 'config', 'lib', 'app/views']
@@ -4520,7 +4551,7 @@ function! s:SetBasePath()
   endif
   let path += ['app/*', 'vendor', 'vendor/plugins/*/lib', 'vendor/plugins/*/test', 'vendor/rails/*/lib', 'vendor/rails/*/test']
   call map(path,'self.app().path(v:val)')
-  call self.setvar('&path',s:pathjoin('.',[self.app().path()],path,old_path))
+  call self.setvar('&path',(add_dot ? '.,' : '').s:pathjoin([self.app().path()],path,old_path))
 endfunction
 
 function! s:BufSettings()
@@ -4572,10 +4603,25 @@ function! s:BufSettings()
   elseif ft == 'eruby'
     call self.setvar('&suffixesadd',".".s:gsub(s:view_types,',',',.').",.rb,.css,.js,.html,.yml,.csv")
     if exists("g:loaded_allml")
-      " allml is available on vim.org.
       call self.setvar('allml_stylesheet_link_tag', "<%= stylesheet_link_tag '\r' %>")
       call self.setvar('allml_javascript_include_tag', "<%= javascript_include_tag '\r' %>")
       call self.setvar('allml_doctype_index', 10)
+    endif
+    if exists("g:loaded_ragtag")
+      call self.setvar('ragtag_stylesheet_link_tag', "<%= stylesheet_link_tag '\r' %>")
+      call self.setvar('ragtag_javascript_include_tag', "<%= javascript_include_tag '\r' %>")
+      call self.setvar('ragtag_doctype_index', 10)
+    endif
+  elseif ft == 'haml'
+    if exists("g:loaded_allml")
+      call self.setvar('allml_stylesheet_link_tag', "= stylesheet_link_tag '\r'")
+      call self.setvar('allml_javascript_include_tag', "= javascript_include_tag '\r'")
+      call self.setvar('allml_doctype_index', 10)
+    endif
+    if exists("g:loaded_ragtag")
+      call self.setvar('ragtag_stylesheet_link_tag', "= stylesheet_link_tag '\r'")
+      call self.setvar('ragtag_javascript_include_tag', "= javascript_include_tag '\r'")
+      call self.setvar('ragtag_doctype_index', 10)
     endif
   endif
   if ft == 'eruby' || ft == 'yaml'
