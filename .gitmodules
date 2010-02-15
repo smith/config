@@ -1,0 +1,3 @@
+[submodule "vendor/vim-rails"]
+	path = vendor/vim-rails
+	url = git://github.com/tpope/vim-rails.git

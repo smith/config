@@ -42,3 +42,17 @@ task :install_extra do
     end
   end
 end
+
+desc "Update external modules"
+task :update_vendor do
+  `git submodule update`
+  base = File.dirname(File.expand_path(__FILE__))
+  vimfiles = File.join(base, "vimfiles")
+  vendor = File.join(base, "vendor")
+  ["vim-rails"].each do |mod|
+    Dir.glob(File.join(vendor, mod) + "/*/*").each do |f|
+      cp_r(f, f.gsub(File.join(vendor, mod), vimfiles))
+    end
+    `git commit #{base} -m 'updated #{mod}'`
+  end
+end
