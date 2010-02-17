@@ -58,7 +58,5 @@ task :update_vendor do
     Dir.glob(mod_path + "/*/*").each do |f|
       cp_r(f, f.gsub(File.join(vendor, mod), vimfiles))
     end
-    puts "Committing changes..."
-    `git commit #{base} -m 'updated #{mod}'`
   end
 end
