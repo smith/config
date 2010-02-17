@@ -2013,7 +2013,7 @@ function! s:RailsIncludefind(str,...)
     endif
   elseif line =~# '\<stylesheet_\(link_tag\|path\)\s*(\='.fpat
     let str = s:sub(str,'^/@!','/stylesheets/')
-    if str != '' && fnamemodify(str, ':e') == '' " Append the default extension iff the filename doesn't already contains an extension
+    if str != '' && fnamemodify(str, ':e') == ''
       let str .= '.css'
     endif
   elseif line =~# '\<javascript_\(include_tag\|path\)\s*(\='.fpat
@@ -2021,7 +2021,7 @@ function! s:RailsIncludefind(str,...)
       let str = "application"
     endif
     let str = s:sub(str,'^/@!','/javascripts/')
-    if str != '' && fnamemodify(str, ':e') == '' " Append the default extension iff the filename doesn't already contains an extension
+    if str != '' && fnamemodify(str, ':e') == ''
       let str .= '.js'
     endif
   elseif line =~# '\<\(has_one\|belongs_to\)\s*(\=\s*'
@@ -2029,17 +2029,7 @@ function! s:RailsIncludefind(str,...)
   elseif line =~# '\<has_\(and_belongs_to_\)\=many\s*(\=\s*'
     let str = 'app/models/'.rails#singularize(str).'.rb'
   elseif line =~# '\<def\s\+' && expand("%:t") =~# '_controller\.rb'
-    let str = s:sub(s:sub(RailsFilePath(),'/controllers/','/views/'),'_controller\.rb$','/'.str)
-    " FIXME: support nested extensions
-    let vt = s:view_types.","
-    while vt != ""
-      let t = matchstr(vt,'[^,]*')
-      let vt = s:sub(vt,'[^,]*,','')
-      if filereadable(str.".".t)
-        let str .= '.'.t
-        break
-      endif
-    endwhile
+    let str = s:findview(str)
   elseif str =~# '_\%(path\|url\)$' || (line =~# ':as\s*=>\s*$' && RailsFileType() =~# '^config-routes\>')
     if line !~# ':as\s*=>\s*$'
       let str = s:sub(str,'_%(path|url)$','')
@@ -2550,42 +2540,27 @@ function! s:viewEdit(cmd,...)
 endfunction
 
 function! s:findview(name)
-  " TODO: full support of nested extensions
-  let c = a:name
-  let pre = "app/views/"
-  let file = ""
-  if c !~ '/'
-    let controller = s:controller(1)
+  let self = rails#buffer()
+  let name = a:name
+  let pre = 'app/views/'
+  if name !~# '/'
+    let controller = self.controller_name(1)
     if controller != ''
-      let c = controller.'/'.c
+      let name = controller.'/'.name
     endif
   endif
-  if c =~ '\.\w\+\.\w\+$' || c =~ '\.'.s:viewspattern().'$'
-    return pre.c
-  elseif rails#app().has_file(pre.c.".rhtml")
-    let file = pre.c.".rhtml"
-  elseif rails#app().has_file(pre.c.".rxml")
-    let file = pre.c.".rxml"
+  if name =~# '\.\w\+\.\w\+$' || name =~# '\.'.s:viewspattern().'$'
+    return pre.name
   else
-    let format = "." . s:format('html')
-    let vt = s:view_types.","
-    while 1
-      while vt != ""
-        let t = matchstr(vt,'[^,]*')
-        let vt = s:sub(vt,'[^,]*,','')
-        if rails#app().has_file(pre.c.format.".".t)
-          let file = pre.c.format.".".t
-          break
+    for format in ['.'.self.format('html'), '']
+      for type in split(s:view_types,',')
+        if self.app().has_file(pre.name.format.'.'.type)
+          return pre.name.format.'.'.type
         endif
-      endwhile
-      if format == '' || file != ''
-        break
-      else
-        let format = ''
-      endif
-    endwhile
+      endfor
+    endfor
   endif
-  return file
+  return ''
 endfunction
 
 function! s:findlayout(name)
@@ -3545,8 +3520,8 @@ function! s:BufSyntax()
           syn keyword rubyRailsTestControllerMethod assert_response assert_redirected_to assert_template assert_recognizes assert_generates assert_routing assert_dom_equal assert_dom_not_equal assert_select assert_select_rjs assert_select_encoded assert_select_email assert_tag assert_no_tag
         endif
       elseif t=~ '^spec\>'
-        syn keyword rubyRailsTestMethod describe context it specify it_should_behave_like before after subject fixtures controller_name helper_name
-        syn keyword rubyRailsTestMethod violated pending mock mock_model stub_model
+        syn keyword rubyRailsTestMethod describe context it its specify it_should_behave_like before after subject fixtures controller_name helper_name
+        syn keyword rubyRailsTestMethod violated pending expect mock mock_model stub_model
         syn match rubyRailsTestMethod '\.\@<!\<stub\>!\@!'
         if t !~ '^spec-model\>'
           syn match   rubyRailsTestControllerMethod  '\.\@<!\<\%(get\|post\|put\|delete\|head\|process\|assigns\)\>'
