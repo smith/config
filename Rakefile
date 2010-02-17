@@ -53,10 +53,12 @@ task :update_vendor do
   Dir.glob(File.join(vendor, "*")).each do |mod|
     mod_path = mod
     mod = File.basename(mod_path)
+    puts "Updating #{mod}..."
     `cd #{mod_path} && git remote update && git merge origin/master`
     Dir.glob(mod_path + "/*/*").each do |f|
       cp_r(f, f.gsub(File.join(vendor, mod), vimfiles))
     end
+    puts "Committing changes..."
     `git commit #{base} -m 'updated #{mod}'`
   end
 end
