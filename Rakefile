@@ -45,8 +45,9 @@ end
 
 desc "Update external modules"
 task :update_vendor do
-  `git submodule init`
-  `git submodule update`
+  puts "Updating submodules..."
+  puts `git submodule init`
+  puts `git submodule update`
   base = File.dirname(File.expand_path(__FILE__))
   vimfiles = File.join(base, "vimfiles")
   vendor = File.join(base, "vendor")
@@ -54,7 +55,7 @@ task :update_vendor do
     mod_path = mod
     mod = File.basename(mod_path)
     puts "Updating #{mod}..."
-    `cd #{mod_path} && git remote update && git merge origin/master`
+    puts `cd #{mod_path} && git pull origin master`
     Dir.glob(mod_path + "/*/*").each do |f|
       cp_r(f, f.gsub(File.join(vendor, mod), vimfiles))
     end
