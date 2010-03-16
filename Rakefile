@@ -61,3 +61,10 @@ task :update_vendor do
     end
   end
 end
+
+desc "Update vim-ruby"
+task :update_vim_ruby do
+  path = File.join(File.dirname(File.expand_path(__FILE__)), "vimfiles")
+  puts `gem install vim-ruby`
+  puts `vim-ruby-install.rb -d #{path}`
+end
