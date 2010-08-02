@@ -33,3 +33,4 @@
   untracked = cyan
 [core]
 	exludesfile = ~/.gitignore
+  #autocrlf = input
