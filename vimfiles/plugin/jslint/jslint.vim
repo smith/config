@@ -46,11 +46,7 @@ function! s:JSLint(args) range
     let s:plugin_path = s:plugin_path . "vimfiles"
     let s:runjslint_ext = 'wsf'
   else
-    if has("gui_macvim") && filereadable('/System/Library/Frameworks/JavaScriptCore.framework/Resources/jsc')
-      let s:cmd = '/System/Library/Frameworks/JavaScriptCore.framework/Resources/jsc'
-    else
-      let s:cmd = 'js'
-    endif
+    let s:cmd = 'node'
     let s:plugin_path = s:plugin_path . ".vim"
     let s:runjslint_ext = 'js'
   endif
@@ -65,7 +61,6 @@ function! s:JSLint(args) range
   end
   let b:jslint_output = system(s:cmd, join(s:jslintrc + getline(b:firstline, b:lastline),
               \ "\n") . "\n")
-
   let b:errors = []
   let b:has_errors = 0
   let b:error_under_cursor = 'No error on current line' "default
