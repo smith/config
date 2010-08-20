@@ -94,6 +94,12 @@ let php_folding=1
 au FileType php call Indent4Spaces()
 au FileType php setl foldlevel=99
 
+" ConqueTerm
+function! s:Terminal()
+  execute 'ConqueTermSplit bash --login'
+endfunction
+command! Terminal call s:Terminal()
+
 " MacVim
 if has("gui_macvim")
     set transp=1
