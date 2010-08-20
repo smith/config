@@ -1,1 +1,2 @@
 download_script.php?src_id=7685: call delete('/home/smith/.vim/tail_options.vim')|call delete('/home/smith/.vim/autoload/tail.vim')|call delete('/home/smith/.vim/doc/tail.txt')|call delete('/home/smith/.vim/macros/vim-tail.zsh')|call delete('/home/smith/.vim/plugin/tail.vim')
+conque_1.1.vba: call delete('/Users/smith/.vim/autoload/conque_term.vim')|call delete('/Users/smith/.vim/doc/conque_term.txt')|call delete('/Users/smith/.vim/plugin/conque_term.vim')|call delete('/Users/smith/.vim/syntax/conque_term.vim')
