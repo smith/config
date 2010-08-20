@@ -38,9 +38,11 @@ end
 desc "Install non-vim config files"
 task :install_extra do
   unless windows?
-    Dir.glob("extra/*").each do |f|
-      dest = File.join(ENV["HOME"], ".#{File.basename(f)}")
-      ln_s(File.expand_path(f), dest, :force => true)
+    Dir["extra/**/*"].each do |f|
+      unless File.directory?(f)
+        dest = File.join(ENV["HOME"], ".#{f.gsub(/^extra\//, "")}")
+        ln_s(File.expand_path(f), dest, :force => true)
+      end
     end
   end
 end
