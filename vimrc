@@ -18,6 +18,7 @@ set backspace=indent,eol,start
 set backupdir=/tmp
 set history=1000
 set shortmess=at
+set tags=./tags;/
 
 " Tabs
 set expandtab
