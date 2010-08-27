@@ -63,10 +63,8 @@ endfunction
 
 " Ruby
 
-" Use ruby syntax for capfiles
-" FIXME: These don't work and I don't know why
-au BufNewFile, BufRead Capfile setf ruby
-au BufNewFile, BufRead .caprc setf ruby
+" Use ruby syntax for addition ruby types
+au BufRead,BufNewFile {Capfile,Gemfile,Rakefile,Thorfile,config.ru,.caprc,.irbrc} set ft=ruby
 
 " JavaScript
 " FIXME: This fails when you have Prototype.js style string inteporation like
