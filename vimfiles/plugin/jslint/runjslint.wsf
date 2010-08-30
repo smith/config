@@ -1,11 +1,15 @@
 <job>
-<script src="fulljslint.js" language="javascript"></script>
+<script langage="javascript">
+// shim for modules
+if (typeof exports === "undefined") { exports = {}; }
+</script>
+<script src="jslint-core.js" language="javascript"></script>
 <script language="javascript">
 /*global JSLINT load readline WScript */
 
 var readSTDIN = function() {
-    var line, 
-        input = [], 
+    var line,
+        input = [],
         emptyCount = 0,
         i;
 
@@ -25,7 +29,7 @@ var body = readSTDIN() || arguments[0],
     i,
     error,
     errorCount;
- 
+
 if (!ok) {
     errorCount = JSLINT.errors.length;
     for (i = 0; i < errorCount; i += 1) {
@@ -37,4 +41,3 @@ if (!ok) {
 }
 </script>
 </job>
- 
