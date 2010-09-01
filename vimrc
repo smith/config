@@ -20,6 +20,11 @@ set history=1000
 set shortmess=at
 set tags=./tags;/
 
+" Status line
+set laststatus=2 " Always show
+" filename [modified (+ or -)] [fugitive info] [filetype]              row,col %
+set statusline=%F\ %m\ %{fugitive#statusline()}\ %y%=%l,%c\ %P
+
 " Tabs
 set expandtab
 set shiftwidth=2
