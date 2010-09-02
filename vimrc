@@ -31,7 +31,12 @@ set shiftwidth=2
 set softtabstop=2
 set tabstop=2
 
-" Key Mapping : Nothing to see here
+" Key Mappings
+
+" Inserts the path of the currently edited file into a command
+" Command mode: Ctrl+P
+" (stolen from Janus)
+cmap <C-P> <C-R>=expand("%:p:h") . "/" <CR>
 
 " GUI options
 if has("gui_running")
