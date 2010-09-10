@@ -112,6 +112,7 @@ command! Terminal call s:Terminal()
 if has("gui_macvim")
     set transp=1
     set anti enc=utf-8 gfn=Menlo:h14,Monaco:h14
+    set fuoptions=maxvert,maxhorz
 endif
 
 " Windows
