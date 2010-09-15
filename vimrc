@@ -59,6 +59,10 @@ set wrap
 set scrolloff=3
 colorscheme desert
 
+" Fix folded highlight in terminal
+highlight Folded ctermfg=Yellow ctermbg=NONE
+highlight FoldColumn ctermfg=Yellow ctermbg=NONE
+
 " Highlight trailing whitespace
 highlight ExtraWhitespace guibg=DarkCyan ctermbg=Blue
 au ColorScheme * highlight ExtraWhitespace guibg=DarkCyan ctermbg=Blue
