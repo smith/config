@@ -94,6 +94,9 @@ function! JavaScriptFold()
   setl foldtext=FoldText()
 endfunction
 
+" JSON
+au! BufRead,BufNewFile *.json setfiletype javascript
+
 " FIXME: When js in rails projects is being edited, it uses 2 spaces. Figure
 "        out how to not have rails.vim override this
 au FileType javascript call Indent4Spaces()
