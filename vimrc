@@ -64,10 +64,9 @@ highlight Folded ctermfg=Yellow ctermbg=NONE
 highlight FoldColumn ctermfg=Yellow ctermbg=NONE
 
 " Highlight trailing whitespace
-highlight ExtraWhitespace guibg=DarkCyan ctermbg=Blue
-au ColorScheme * highlight ExtraWhitespace guibg=DarkCyan ctermbg=Blue
-au BufWinEnter * match ExtraWhitespace /\s\+$\| \+\ze\t/
-au BufWrite * match ExtraWhitespace /\s\+$\| \+\ze\t/
+set list
+set listchars=tab:»·,trail:·,nbsp:·
+highlight SpecialKey guibg=DarkCyan ctermbg=Blue
 
 function! Indent4Spaces()
   set tabstop=4
