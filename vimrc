@@ -31,6 +31,9 @@ set shiftwidth=2
 set softtabstop=2
 set tabstop=2
 
+" Use :w!! to save with sudo if you're editing a readonly file
+cmap w!! w !sudo tee % >/dev/null
+
 " Key Mappings
 
 " Inserts the path of the currently edited file into a command
@@ -56,6 +59,7 @@ endif
 set ruler
 set title
 set wrap
+set cursorline
 set scrolloff=3
 colorscheme desert
 
