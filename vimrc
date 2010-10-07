@@ -82,7 +82,7 @@ endfunction
 " Ruby
 
 " Use ruby syntax for addition ruby types
-au BufRead,BufNewFile {Capfile,Gemfile,Rakefile,Thorfile,config.ru,.caprc,.irbrc} set ft=ruby
+au BufRead,BufNewFile {Capfile,Gemfile,Rakefile,Thorfile,config.ru,.caprc,.irbrc,irb_tempfile*} set ft=ruby
 
 " JavaScript
 " FIXME: This fails when you have Prototype.js style string inteporation like
