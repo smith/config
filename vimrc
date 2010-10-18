@@ -34,6 +34,9 @@ set tabstop=2
 " Use :w!! to save with sudo if you're editing a readonly file
 cmap w!! w !sudo tee % >/dev/null
 
+" Autosave when focus is lost (or stolen)
+au FocusLost * :up
+
 " Key Mappings
 
 " Inserts the path of the currently edited file into a command
