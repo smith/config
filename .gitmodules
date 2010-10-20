@@ -11,3 +11,6 @@
 [submodule "vimfiles/bundle/LargeFile"]
 	path = vimfiles/bundle/LargeFile
 	url = git://github.com/vim-scripts/LargeFile.git
+[submodule "vimfiles/bundle/The-NERD-Commenter"]
+	path = vimfiles/bundle/The-NERD-Commenter
+	url = git://github.com/vim-scripts/The-NERD-Commenter.git
