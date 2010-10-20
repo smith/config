@@ -41,3 +41,6 @@
 [submodule "vimfiles/bundle/vim-markdown"]
 	path = vimfiles/bundle/vim-markdown
 	url = git://github.com/plasticboy/vim-markdown.git
+[submodule "vimfiles/bundle/vim-endwise"]
+	path = vimfiles/bundle/vim-endwise
+	url = git://github.com/tpope/vim-endwise.git
