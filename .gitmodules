@@ -20,3 +20,6 @@
 [submodule "vimfiles/bundle/checksyntax_vim"]
 	path = vimfiles/bundle/checksyntax_vim
 	url = git://github.com/tomtom/checksyntax_vim.git
+[submodule "vimfiles/bundle/vim-git"]
+	path = vimfiles/bundle/vim-git
+	url = git://github.com/tpope/vim-git.git
