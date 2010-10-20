@@ -1,1 +1,0 @@
-/Users/smith/Projects/vim-config/vendor/vim-pathogen/autoload/pathogen.vim
