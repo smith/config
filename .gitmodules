@@ -8,3 +8,6 @@
 [submodule "vimfiles/bundle/vim-ruby"]
 	path = vimfiles/bundle/vim-ruby
 	url = git://github.com/vim-ruby/vim-ruby.git
+[submodule "vimfiles/bundle/LargeFile"]
+	path = vimfiles/bundle/LargeFile
+	url = git://github.com/vim-scripts/LargeFile.git
