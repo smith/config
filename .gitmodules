@@ -17,3 +17,6 @@
 [submodule "vimfiles/bundle/nerdtree"]
 	path = vimfiles/bundle/nerdtree
 	url = git://github.com/scrooloose/nerdtree.git
+[submodule "vimfiles/bundle/checksyntax_vim"]
+	path = vimfiles/bundle/checksyntax_vim
+	url = git://github.com/tomtom/checksyntax_vim.git
