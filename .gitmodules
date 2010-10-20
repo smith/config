@@ -23,3 +23,6 @@
 [submodule "vimfiles/bundle/vim-git"]
 	path = vimfiles/bundle/vim-git
 	url = git://github.com/tpope/vim-git.git
+[submodule "vimfiles/bundle/vim-fugitive"]
+	path = vimfiles/bundle/vim-fugitive
+	url = git://github.com/tpope/vim-fugitive.git
