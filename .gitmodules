@@ -2,3 +2,6 @@
 [submodule "vimfiles/bundle/vim-rails"]
 	path = vimfiles/bundle/vim-rails
 	url = git://github.com/tpope/vim-rails.git
+[submodule "vimfiles/bundle/Conque-Shell"]
+	path = vimfiles/bundle/Conque-Shell
+	url = git://github.com/vim-scripts/Conque-Shell.git
