@@ -9,7 +9,7 @@ end
 task :default => [:install]
 
 desc "Install configuration files"
-task :install do
+task :install => [:update_vendor] do
   print "This operation will remove any existing Vim configuration. Continue? "
   if STDIN.gets[0].chr.downcase == "y"
     map = { "vimrc"    => windows? ? "_vimrc"   : ".vimrc",
@@ -52,18 +52,6 @@ task :update_vendor do
   puts "Updating submodules..."
   puts `git submodule init`
   puts `git submodule update`
-  base = File.dirname(File.expand_path(__FILE__))
-  vimfiles = File.join(base, "vimfiles")
-  vendor = File.join(base, "vendor")
-  Dir.glob(File.join(vendor, "*")).each do |mod|
-    mod_path = mod
-    mod = File.basename(mod_path)
-    puts "Updating #{mod}..."
-    puts `cd #{mod_path} && git pull origin master`
-    Dir.glob(mod_path + "/*/*").each do |f|
-      cp_r(f, f.gsub(File.join(vendor, mod), vimfiles))
-    end
-  end
 end
 
 desc "Update vim-ruby"

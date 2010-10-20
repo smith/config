@@ -1,6 +1,4 @@
-[submodule "vendor/vim-rails"]
-	path = vendor/vim-rails
+
+[submodule "vimfiles/bundle/vim-rails"]
+	path = vimfiles/bundle/vim-rails
 	url = git://github.com/tpope/vim-rails.git
-[submodule "vendor/vim-pathogen"]
-	path = vendor/vim-pathogen
-	url = git://github.com/tpope/vim-pathogen.git
