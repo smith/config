@@ -47,3 +47,6 @@
 [submodule "vimfiles/bundle/vim-css-color"]
 	path = vimfiles/bundle/vim-css-color
 	url = git://github.com/skammer/vim-css-color.git
+[submodule "vimfiles/bundle/nerdcommenter"]
+	path = vimfiles/bundle/nerdcommenter
+	url = git://github.com/scrooloose/nerdcommenter.git
