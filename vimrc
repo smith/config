@@ -11,11 +11,12 @@ set autoread
 set hidden
 set incsearch
 set ignorecase
+set nobackup
+set noswapfile
 set smartcase
 set wildmenu
 set wildmode=list:longest
 set backspace=indent,eol,start
-set backupdir=/tmp
 set history=1000
 set shortmess=at
 set tags=./tags;/
@@ -133,7 +134,5 @@ endif
 if has("win32")
     " Use CUA keystrokes for clipboard: CTRL-X, CTRL-C, CTRL-V and CTRL-z
     source $VIMRUNTIME/mswin.vim
-
-    set backupdir=c:\temp,.
     set guifont=Consolas:h13:cANSI,Anonymous\ Pro:h13:cANSI
 endif
