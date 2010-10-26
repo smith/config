@@ -1,10 +1,13 @@
 " Nathan L Smith's .vimrc
 " http://github.com/smith/vim-config/
 
+" Pathogen
+filetype off
+call pathogen#runtime_append_all_bundles()
+call pathogen#helptags()
+
 syntax on
-filetype on
-filetype indent on
-filetype plugin on
+filetype plugin indent on
 
 " General options
 set autoread
@@ -73,9 +76,6 @@ highlight ExtraWhitespace guibg=DarkCyan ctermbg=Blue
 au ColorScheme * highlight ExtraWhitespace guibg=DarkCyan ctermbg=Blue
 au BufWinEnter * match ExtraWhitespace /\s\+$\| \+\ze\t/
 au BufWrite * match ExtraWhitespace /\s\+$\| \+\ze\t/
-
-" Pathogen
-call pathogen#runtime_append_all_bundles()
 
 function! Indent4Spaces()
   set tabstop=4
