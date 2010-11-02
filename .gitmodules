@@ -58,4 +58,4 @@
 	url = git://github.com/hallettj/jslint.vim.git
 [submodule "vimfiles/bundle/gist-vim"]
 	path = vimfiles/bundle/gist-vim
-	url = git://github.com/mattn/gist-vim.git
+	url = git://github.com/smith/gist-vim.git
