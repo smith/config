@@ -56,6 +56,3 @@
 [submodule "vimfiles/bundle/jslint.vim"]
 	path = vimfiles/bundle/jslint.vim
 	url = git://github.com/hallettj/jslint.vim.git
-[submodule "vimfiles/bundle/gist-vim"]
-	path = vimfiles/bundle/gist-vim
-	url = git://github.com/smith/gist-vim.git
