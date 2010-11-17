@@ -65,3 +65,6 @@
 [submodule "vimfiles/bundle/ManPageView"]
 	path = vimfiles/bundle/ManPageView
 	url = git://github.com/vim-scripts/ManPageView.git
+[submodule "vimfiles/bundle/PickAColor"]
+	path = vimfiles/bundle/PickAColor
+	url = git://github.com/Raimondi/PickAColor.git
