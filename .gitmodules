@@ -68,3 +68,6 @@
 [submodule "vimfiles/bundle/PickAColor"]
 	path = vimfiles/bundle/PickAColor
 	url = git://github.com/Raimondi/PickAColor.git
+[submodule "vimfiles/bundle/vim-repeat"]
+	path = vimfiles/bundle/vim-repeat
+	url = git://github.com/tpope/vim-repeat.git
