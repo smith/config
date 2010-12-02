@@ -74,3 +74,6 @@
 [submodule "vimfiles/bundle/vim-rooter"]
 	path = vimfiles/bundle/vim-rooter
 	url = git://github.com/airblade/vim-rooter.git
+[submodule "vimfiles/bundle/Conque-Shell"]
+	path = vimfiles/bundle/Conque-Shell
+	url = git://github.com/vim-scripts/Conque-Shell.git
