@@ -17,6 +17,8 @@ set ignorecase
 set nobackup
 set noswapfile
 set smartcase
+set spell
+set spelllang=en_us
 set wildmenu
 set wildmode=list:longest
 set backspace=indent,eol,start
