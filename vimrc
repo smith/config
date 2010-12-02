@@ -83,6 +83,9 @@ function! Indent4Spaces()
   set shiftwidth=4
 endfunction
 
+" Markdown
+au BufRead,BufNewFile {*.markdown,*.md,*.mdk} set ft=markdown
+
 " Ruby
 
 " Use ruby syntax for addition ruby types
