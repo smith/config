@@ -56,9 +56,6 @@
 [submodule "vimfiles/bundle/gist-vim"]
 	path = vimfiles/bundle/gist-vim
 	url = git://github.com/mattn/gist-vim.git
-[submodule "vimfiles/bundle/delmitMate"]
-	path = vimfiles/bundle/delmitMate
-	url = git://github.com/Raimondi/delimitMate.git
 [submodule "vimfiles/bundle/ManPageView"]
 	path = vimfiles/bundle/ManPageView
 	url = git://github.com/vim-scripts/ManPageView.git
