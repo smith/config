@@ -83,3 +83,6 @@
 [submodule "vimfiles/bundle/Align"]
 	path = vimfiles/bundle/Align
 	url = git://github.com/vim-scripts/Align.git
+[submodule "vimfiles/bundle/vim-indent-guides"]
+	path = vimfiles/bundle/vim-indent-guides
+	url = git://github.com/nathanaelkane/vim-indent-guides.git

@@ -40,6 +40,9 @@ set tabstop=2
 " Use :w!! to save with sudo if you're editing a readonly file
 cmap w!! w !sudo tee % >/dev/null
 
+" Activate indent guides
+au VimEnter * :IndentGuidesEnable
+
 " Key Mappings
 
 " Inserts the path of the currently edited file into a command
