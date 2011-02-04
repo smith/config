@@ -80,3 +80,6 @@
 [submodule "vimfiles/bundle/taskpaper.vim"]
 	path = vimfiles/bundle/taskpaper.vim
 	url = git://github.com/davidoc/taskpaper.vim.git
+[submodule "vimfiles/bundle/Align"]
+	path = vimfiles/bundle/Align
+	url = git://github.com/vim-scripts/Align.git
