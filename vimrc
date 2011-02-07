@@ -19,6 +19,7 @@ set noswapfile
 set smartcase
 set spell
 set spelllang=en_us
+set showcmd
 set wildmenu
 set wildmode=list:longest
 set backspace=indent,eol,start
