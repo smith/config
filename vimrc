@@ -45,6 +45,8 @@ cmap w!! w !sudo tee % >/dev/null
 au VimEnter * :IndentGuidesEnable
 
 " Key Mappings
+let mapleader=","
+let g:mapleader=","
 
 " Inserts the path of the currently edited file into a command
 " Command mode: Ctrl+P
@@ -91,6 +93,7 @@ endfunction
 
 " Markdown
 au BufRead,BufNewFile {*.markdown,*.md,*.mdk} set ft=markdown
+au BufRead,BufNewFile {*.textile} set ft=textile
 
 " Ruby
 
