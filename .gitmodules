@@ -89,3 +89,6 @@
 [submodule "vimfiles/bundle/textile.vim"]
 	path = vimfiles/bundle/textile.vim
 	url = git://github.com/timcharper/textile.vim.git
+[submodule "vimfiles/bundle/VimCalc"]
+	path = vimfiles/bundle/VimCalc
+	url = git://github.com/gregsexton/VimCalc.git
