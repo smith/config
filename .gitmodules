@@ -92,3 +92,6 @@
 [submodule "vimfiles/bundle/VimCalc"]
 	path = vimfiles/bundle/VimCalc
 	url = git://github.com/gregsexton/VimCalc.git
+[submodule "vimfiles/bundle/htmlspecialchars"]
+	path = vimfiles/bundle/htmlspecialchars
+	url = git://github.com/vim-scripts/htmlspecialchars.git
