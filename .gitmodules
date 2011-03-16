@@ -95,3 +95,6 @@
 [submodule "vimfiles/bundle/htmlspecialchars"]
 	path = vimfiles/bundle/htmlspecialchars
 	url = git://github.com/vim-scripts/htmlspecialchars.git
+[submodule "vimfiles/bundle/vim-unimpaired"]
+	path = vimfiles/bundle/vim-unimpaired
+	url = git://github.com/tpope/vim-unimpaired.git
