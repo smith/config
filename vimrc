@@ -24,6 +24,7 @@ set wildmenu
 set wildmode=list:longest
 set backspace=indent,eol,start
 set history=1000
+set pastetoggle=<F2>
 set shortmess=at
 set tags=./tags;/
 
