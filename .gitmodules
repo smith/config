@@ -98,3 +98,6 @@
 [submodule "vimfiles/bundle/vim-ruby-runner"]
 	path = vimfiles/bundle/vim-ruby-runner
 	url = git://github.com/henrik/vim-ruby-runner.git
+[submodule "vimfiles/bundle/vim-coffee-script"]
+	path = vimfiles/bundle/vim-coffee-script
+	url = git://github.com/kchmck/vim-coffee-script.git
