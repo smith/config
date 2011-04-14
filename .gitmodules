@@ -101,3 +101,6 @@
 [submodule "vimfiles/bundle/vim-coffee-script"]
 	path = vimfiles/bundle/vim-coffee-script
 	url = git://github.com/kchmck/vim-coffee-script.git
+[submodule "vimfiles/bundle/TwitVim"]
+	path = vimfiles/bundle/TwitVim
+	url = git://github.com/vim-scripts/TwitVim.git
