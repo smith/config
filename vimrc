@@ -102,6 +102,8 @@ au BufRead,BufNewFile {*.textile} set ft=textile
 au BufRead,BufNewFile {Capfile,Gemfile,Rakefile,Thorfile,config.ru,.caprc,.irbrc,irb_tempfile*} set ft=ruby
 
 " JavaScript
+au BufRead,BufNewFile {*.js.asp} set ft=javascript
+
 " FIXME: This fails when you have Prototype.js style string inteporation like
 "        #{prop} in a string
 function! JavaScriptFold()
