@@ -1,5 +1,5 @@
-require "rubygems"
-["looksee/shortcuts", "utility_belt"].each do |g|
+require 'rubygems'
+%w{ looksee flyrb }.each do |g|
   begin
     require g
   rescue LoadError
