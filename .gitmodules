@@ -47,9 +47,6 @@
 [submodule "vimfiles/bundle/nerdcommenter"]
 	path = vimfiles/bundle/nerdcommenter
 	url = git://github.com/scrooloose/nerdcommenter.git
-[submodule "vimfiles/bundle/vim-markdown-preview"]
-	path = vimfiles/bundle/vim-markdown-preview
-	url = git://github.com/robgleeson/vim-markdown-preview.git
 [submodule "vimfiles/bundle/jslint.vim"]
 	path = vimfiles/bundle/jslint.vim
 	url = git://github.com/hallettj/jslint.vim.git
