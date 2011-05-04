@@ -34,3 +34,5 @@
 [core]
 	exludesfile = ~/.gitignore
   #autocrlf = input
+[achievement]
+	upload = true

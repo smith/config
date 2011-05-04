@@ -1,0 +1,33 @@
+export EDITOR=vim
+export PATH=~/bin:/usr/local/bin:/usr/local/sbin:$PATH
+
+# Load .bashrc
+[[ -s "$HOME/.bashrc" ]] && source "$HOME/.bashrc"
+
+# ls alias and color
+if [ `uname` == "Darwin" ]; then
+  export LSCOLORS=Dxfxcxdxbxegedabagacad
+  alias ls="ls -FGh"
+else
+  alias ls="ls -Fh --color=auto"
+fi
+
+# Alias mvim (MacVim) to vim and make EDITOR if available
+if [ `which mvim` ]; then
+  alias vim=mvim
+  export EDITOR="mvim -f"
+fi
+
+# This loads RVM into a shell session.
+[[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm"
+
+# Git completion
+if [[ -s "/usr/local/Cellar/git/1.7.3.5/etc/bash_completion.d/git-completion.bash" ]]; then
+source "/usr/local/Cellar/git/1.7.3.5/etc/bash_completion.d/git-completion.bash"
+fi
+
+# NVM
+[[ -s "$HOME/.nvm/nvm.sh" ]] && source "$HOME/.nvm/nvm.sh"
+
+# Git Situational Awareness
+[[ -s "$HOME/.git_sit_awareness" ]] && source "$HOME/.git_sit_awareness"
