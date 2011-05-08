@@ -1,5 +1,6 @@
 export EDITOR=vim
-export PATH=~/bin:/usr/local/bin:/usr/local/sbin:$PATH
+export PATH=./node_modules/.bin:$HOME/bin:/usr/local/bin:/usr/local/sbin:$PATH
+export NODE_PATH=./node_modules:$HOME/.node_modules:/usr/local/lib/node_modules:$NODE_PATH
 
 # Load .bashrc
 [[ -s "$HOME/.bashrc" ]] && source "$HOME/.bashrc"
@@ -19,10 +20,10 @@ if [ `which mvim` ]; then
   export EDITOR="mvim -f"
 fi
 
-# This loads RVM into a shell session.
+# Load RVM into a shell session
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm"
 
-# Git completion
+# Git completion (on Mac/Homebrew)
 if [[ -s "/usr/local/Cellar/git/1.7.3.5/etc/bash_completion.d/git-completion.bash" ]]; then
 source "/usr/local/Cellar/git/1.7.3.5/etc/bash_completion.d/git-completion.bash"
 fi
@@ -31,4 +32,4 @@ fi
 [[ -s "$HOME/.nvm/nvm.sh" ]] && source "$HOME/.nvm/nvm.sh"
 
 # Git Situational Awareness
-[[ -s "$HOME/.git_sit_awareness" ]] && source "$HOME/.git_sit_awareness"
+[[ -s "$HOME/.git_sit_awareness.sh" ]] && source "$HOME/.git_sit_awareness.sh"
