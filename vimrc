@@ -72,6 +72,9 @@ endif
 set ruler
 set title
 set wrap
+if exists("+colorcolumn")
+  set colorcolumn=81
+endif
 set cursorline
 set scrolloff=3
 colorscheme desert
