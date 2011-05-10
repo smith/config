@@ -44,13 +44,12 @@ git_status_indicator() {
     fi
 }
 
+# Changed the original here to what I found at
+# http://www.jonmaddox.com/2008/03/13/show-your-git-branch-name-in-your-prompt/
 git_branch() {
     git_directory="$(git_dir)"
     if [ "$git_directory" ]; then
-        grep "ref:" "$git_directory/HEAD" &>/dev/null && 
-        rev "$git_directory/HEAD" | cut -d"/" -f-1 | rev ||   # branch names
-        git describe --exact-match --tags HEAD 2>/dev/null || # tags
-        cut -c-$SHORT_HASH_LENGTH < "$git_directory/HEAD"     # commit sha1 hashes
+      echo `git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'`
     fi
 }
 
