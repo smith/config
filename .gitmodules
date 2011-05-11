@@ -101,3 +101,6 @@
 [submodule "vimfiles/bundle/TwitVim"]
 	path = vimfiles/bundle/TwitVim
 	url = git://github.com/vim-scripts/TwitVim.git
+[submodule "vimfiles/bundle/scala-vim-support"]
+	path = vimfiles/bundle/scala-vim-support
+	url = git://github.com/rosstimson/scala-vim-support.git
