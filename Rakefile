@@ -41,10 +41,13 @@ namespace :install do
   task :extra do
     unless windows?
       Dir["extra/**/*"].each do |f|
-        unless File.directory?(f)
-          dest = File.join(ENV["HOME"], ".#{f.gsub(/^extra\//, "")}")
+        dest = File.join(ENV["HOME"], ".#{f.gsub(/^extra\//, "")}")
+        if File.directory?(f)
+          mkdir_p(dest)
+        else
           ln_s(File.expand_path(f), dest, :force => true)
         end
+
       end
     end
   end

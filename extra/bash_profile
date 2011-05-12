@@ -24,9 +24,13 @@ fi
 # Load RVM into a shell session
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm"
 
-# Git completion (on Mac/Homebrew)
-if [[ -s "/usr/local/Cellar/git/1.7.3.5/etc/bash_completion.d/git-completion.bash" ]]; then
-source "/usr/local/Cellar/git/1.7.3.5/etc/bash_completion.d/git-completion.bash"
+# Completion scripts
+# 
+# If you're on a Mac, you'll need to `brew install bash-completion` for some of
+# these to work
+# XXX: If this directory is empty, we get a warning.
+if [[ -d "$HOME/.bash_completion.d" ]]; then
+  for f in "$HOME/.bash_completion.d/*"; do source $f; done
 fi
 
 # NVM
