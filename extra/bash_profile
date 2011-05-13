@@ -21,6 +21,11 @@ if [ `which mvim 2> /dev/null` ]; then
   export EDITOR="mvim -f"
 fi
 
+# Ubuntu calls ack ack-grep.
+if [ `which ack-grep 2> /dev/null` ]; then
+  alias ack=ack-grep
+fi
+
 # Load RVM into a shell session
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm"
 
