@@ -1,5 +1,5 @@
 .*.sw*
 .DS_Store
-doc/tags
+doc/tags*
 mkmf.log
 Thumbs.db
