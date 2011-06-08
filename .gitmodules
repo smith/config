@@ -110,3 +110,6 @@
 [submodule "vimfiles/bundle/vim-extradite"]
 	path = vimfiles/bundle/vim-extradite
 	url = git://github.com/int3/vim-extradite.git
+[submodule "vimfiles/bundle/MailApp"]
+	path = vimfiles/bundle/MailApp
+	url = git://github.com/vim-scripts/MailApp.git
