@@ -47,9 +47,6 @@
 [submodule "vimfiles/bundle/nerdcommenter"]
 	path = vimfiles/bundle/nerdcommenter
 	url = git://github.com/scrooloose/nerdcommenter.git
-[submodule "vimfiles/bundle/jslint.vim"]
-	path = vimfiles/bundle/jslint.vim
-	url = git://github.com/hallettj/jslint.vim.git
 [submodule "vimfiles/bundle/gist-vim"]
 	path = vimfiles/bundle/gist-vim
 	url = git://github.com/mattn/gist-vim.git
@@ -113,3 +110,6 @@
 [submodule "vimfiles/bundle/MailApp"]
 	path = vimfiles/bundle/MailApp
 	url = git://github.com/vim-scripts/MailApp.git
+[submodule "vimfiles/bundle/jshint.vim"]
+	path = vimfiles/bundle/jshint.vim
+	url = https://github.com/manalang/jshint.vim.git
