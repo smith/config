@@ -135,6 +135,9 @@ let php_folding=1
 au FileType php call Indent4Spaces()
 au FileType php setl foldlevel=99
 
+" Python
+au FileType python call Indent4Spaces()
+
 " ConqueTerm
 function! s:Terminal()
   execute 'ConqueTermSplit bash --login'
@@ -154,3 +157,5 @@ if has("win32")
     source $VIMRUNTIME/mswin.vim
     set guifont=Consolas:h13:cANSI,Anonymous\ Pro:h13:cANSI
 endif
+
+set t_md=
