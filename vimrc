@@ -143,6 +143,8 @@ function! s:Terminal()
   execute 'ConqueTermSplit bash --login'
 endfunction
 command! Terminal call s:Terminal()
+au FileType conque_term highlight ExtraWhitespace guibg=NONE ctermbg=NONE
+au FileType conque_term set nospell
 
 " MacVim
 if has("gui_macvim")
