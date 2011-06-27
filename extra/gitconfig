@@ -32,5 +32,3 @@
   untracked = cyan
 [core]
 	excludesfile = ~/.gitignore
-[achievement]
-	upload = true
