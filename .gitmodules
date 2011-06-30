@@ -113,3 +113,6 @@
 [submodule "vimfiles/bundle/jshint.vim"]
 	path = vimfiles/bundle/jshint.vim
 	url = https://github.com/manalang/jshint.vim.git
+[submodule "vimfiles/bundle/browser-refresh.vim"]
+	path = vimfiles/bundle/browser-refresh.vim
+	url = git://github.com/mkitt/browser-refresh.vim.git
