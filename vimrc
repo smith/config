@@ -139,10 +139,15 @@ au FileType php setl foldlevel=99
 au FileType python call Indent4Spaces()
 
 " ConqueTerm
-function! s:Terminal()
-  execute 'ConqueTermSplit bash --login'
+function! s:Terminal(...)
+  if a:0 > 0
+    let l:cmd = a:1
+  else
+    let l:cmd = 'bash --login'
+  endif
+  execute 'ConqueTermSplit ' . l:cmd
 endfunction
-command! Terminal call s:Terminal()
+command! -nargs=? Terminal call s:Terminal(<f-args>)
 au FileType conque_term highlight ExtraWhitespace guibg=NONE ctermbg=NONE
 au FileType conque_term set nospell
 
