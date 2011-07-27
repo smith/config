@@ -116,3 +116,6 @@
 [submodule "vimfiles/bundle/browser-refresh.vim"]
 	path = vimfiles/bundle/browser-refresh.vim
 	url = git://github.com/mkitt/browser-refresh.vim.git
+[submodule "vimfiles/bundle/NrrwRgn"]
+	path = vimfiles/bundle/NrrwRgn
+	url = git://github.com/chrisbra/NrrwRgn.git
