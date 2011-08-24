@@ -99,9 +99,10 @@ endfunction
 au BufRead,BufNewFile {*.markdown,*.md,*.mdk} set ft=markdown
 au BufRead,BufNewFile {*.textile} set ft=textile
 
-" Ruby
+" Property lists
+au BufRead,BufNewFile {*.plist} set ft=xml
 
-" Use ruby syntax for addition ruby types
+" Use ruby syntax for additional ruby types
 au BufRead,BufNewFile {Capfile,Gemfile,Rakefile,Thorfile,config.ru,.caprc,.irbrc,irb_tempfile*} set ft=ruby
 
 " JavaScript
