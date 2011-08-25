@@ -96,17 +96,17 @@ function! Indent4Spaces()
 endfunction
 
 " Markdown
-au BufRead,BufNewFile {*.markdown,*.md,*.mdk} set ft=markdown
-au BufRead,BufNewFile {*.textile} set ft=textile
+au BufRead,BufNewFile,BufWrite {*.markdown,*.md,*.mdk} set ft=markdown
+au BufRead,BufNewFile,BufWrite {*.textile} set ft=textile
 
 " Property lists
-au BufRead,BufNewFile {*.plist} set ft=xml
+au BufRead,BufNewFile,BufWrite {*.plist} set ft=xml
 
 " Use ruby syntax for additional ruby types
-au BufRead,BufNewFile {Capfile,Gemfile,Rakefile,Thorfile,config.ru,.caprc,.irbrc,irb_tempfile*} set ft=ruby
+au BufRead,BufNewFile,BufWrite {Capfile,Gemfile,Rakefile,Thorfile,config.ru,.caprc,.irbrc,irb_tempfile*} set ft=ruby
 
 " JavaScript
-au BufRead,BufNewFile {*.js.asp} set ft=javascript
+au BufRead,BufNewFile,BufWrite {*.js.asp,*.json} set ft=javascript
 
 " FIXME: This fails when you have Prototype.js style string inteporation like
 "        #{prop} in a string
@@ -121,8 +121,6 @@ function! JavaScriptFold()
   setl foldtext=FoldText()
 endfunction
 
-" JSON
-au! BufRead,BufNewFile *.json setfiletype javascript
 
 " FIXME: When js in rails projects is being edited, it uses 2 spaces. Figure
 "        out how to not have rails.vim override this
