@@ -19,6 +19,7 @@ fi
 if [ `which mvim 2> /dev/null` ]; then
   alias vim=mvim
   export EDITOR="mvim -f"
+  export GEM_EDITOR="open" # This is for the gem-open gem on a Mac
 fi
 
 # Ubuntu calls ack ack-grep.
