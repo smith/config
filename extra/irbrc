@@ -1,8 +1,0 @@
-require 'rubygems'
-%w{ looksee flyrb }.each do |g|
-  begin
-    require g
-  rescue LoadError
-    puts "WARNING: #{g} is not installed."
-  end
-end

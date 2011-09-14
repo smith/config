@@ -32,6 +32,11 @@ if [ `which pydf 2> /dev/null` ]; then
   alias df=pydf
 fi
 
+# Pry instead of irb
+if [ `which pry 2> /dev/null` ]; then
+  alias irb=pry
+fi
+
 # Load RVM into a shell session
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm"
 
