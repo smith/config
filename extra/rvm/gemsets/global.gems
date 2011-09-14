@@ -1,0 +1,8 @@
+bundler
+capistrano
+capistrano-ext
+git-up
+rake
+repl
+serve
+pry
