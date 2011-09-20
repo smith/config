@@ -16,24 +16,24 @@ else
 fi
 
 # Alias mvim (MacVim) to vim and make EDITOR if available
-if [ `which mvim 2> /dev/null` ]; then
+if [ `hash mvim 2> /dev/null` ]; then
   alias vim=mvim
   export EDITOR="mvim -f"
   export GEM_EDITOR="open" # This is for the gem-open gem on a Mac
 fi
 
 # Ubuntu calls ack ack-grep.
-if [ `which ack-grep 2> /dev/null` ]; then
+if [ `hash ack-grep 2> /dev/null` ]; then
   alias ack=ack-grep
 fi
 
 # Use pydf if it's available
-if [ `which pydf 2> /dev/null` ]; then
+if [ `hash pydf 2> /dev/null` ]; then
   alias df=pydf
 fi
 
 # Pry instead of irb
-if [ `which pry 2> /dev/null` ]; then
+if [ `hash pry 2> /dev/null` ]; then
   alias irb=pry
 fi
 
