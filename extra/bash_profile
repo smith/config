@@ -37,6 +37,9 @@ fi
 # Load RVM into a shell session
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm"
 
+# Source the current directory's .rvmrc if it has one
+[[ -s ".rvmrc" ]] && . ".rvmrc"
+
 # Pry instead of irb
 if [ `command -v pry 2> /dev/null` ]; then
   alias irb="pry"
