@@ -108,6 +108,9 @@ au BufRead,BufNewFile,BufWrite {Capfile,Gemfile,Rakefile,Thorfile,config.ru,.cap
 " JavaScript
 au BufRead,BufNewFile,BufWrite {*.js.asp,*.json} set ft=javascript
 
+" Indent-based folding
+au BufRead,BufNewFile,BufWrite {*.json,,*.py,*.coffee,*.yaml,*.yml} set foldmethod=indent
+
 " FIXME: This fails when you have Prototype.js style string inteporation like
 "        #{prop} in a string
 function! JavaScriptFold()
