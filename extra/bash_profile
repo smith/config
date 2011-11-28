@@ -40,11 +40,6 @@ fi
 # Source the current directory's .rvmrc if it has one
 [[ -s ".rvmrc" ]] && . ".rvmrc"
 
-# Pry instead of irb
-if [ `command -v pry 2> /dev/null` ]; then
-  alias irb="pry"
-fi
-
 # Completion scripts
 #
 # If you're on a Mac, you'll need to `brew install bash-completion` for some of
