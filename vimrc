@@ -124,6 +124,8 @@ function! JavaScriptFold()
   setl foldtext=FoldText()
 endfunction
 
+" Lisp
+au BufRead,BufNewFile,BufWrite {*.clj,*.scm,*.scheme} set ft=lisp
 
 " FIXME: When js in rails projects is being edited, it uses 2 spaces. Figure
 "        out how to not have rails.vim override this
