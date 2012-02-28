@@ -95,6 +95,9 @@ function! Indent4Spaces()
   set shiftwidth=4
 endfunction
 
+" CSS-type things
+au BufRead,BufNewFile,BufWrite {*.less} set ft=css
+
 " Markdown
 au BufRead,BufNewFile,BufWrite {*.markdown,*.md,*.mdk} set ft=markdown
 au BufRead,BufNewFile,BufWrite {*.textile} set ft=textile
