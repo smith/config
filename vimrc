@@ -27,6 +27,7 @@ set history=1000
 set pastetoggle=<F2>
 set shortmess=at
 set tags=./tags;/
+set t_Co=256
 
 " Status line
 set laststatus=2 " Always show
@@ -77,7 +78,7 @@ if exists("+colorcolumn")
 endif
 set cursorline
 set scrolloff=3
-colorscheme desert
+colorscheme desert256
 
 " Fix folded highlight in terminal
 highlight Folded ctermfg=Yellow ctermbg=NONE
@@ -171,5 +172,3 @@ if has("win32")
     source $VIMRUNTIME/mswin.vim
     set guifont=Consolas:h13:cANSI,Anonymous\ Pro:h13:cANSI
 endif
-
-set t_md=
