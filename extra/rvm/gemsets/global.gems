@@ -1,6 +1,7 @@
 bundler
 capistrano
-capistrano-ext
+cheat
+chef
 git-up
 rake
 repl
