@@ -20,6 +20,7 @@ set smartcase
 set spell
 set spelllang=en_us
 set showcmd
+set switchbuf=useopen
 set wildmenu
 set wildmode=list:longest
 set backspace=indent,eol,start
@@ -42,9 +43,6 @@ set tabstop=2
 
 " Use :w!! to save with sudo if you're editing a readonly file
 cmap w!! w !sudo tee % >/dev/null
-
-" Activate indent guides
-au VimEnter * :IndentGuidesEnable
 
 " Key Mappings
 let mapleader=","

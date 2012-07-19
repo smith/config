@@ -19,6 +19,20 @@ else
   alias o="vim"
 fi
 
+# Alias mvim (MacVim) to vim and make EDITOR if available
+if [ `command -v mvim 2> /dev/null` ]; then
+  if [ $TMUX ] && [ `command -v tmux-vim 2> /dev/null` ]
+  then
+    alias vi="tmux-vim"
+    alias vim="tmux-vim"
+  else
+    alias vi="mvim"
+    alias vim="mvim"
+  fi
+  export EDITOR="mvim -f"
+  export GEM_EDITOR="open" # This is for the gem-open gem on a Mac
+fi
+
 # Ubuntu calls ack ack-grep.
 if [ `command -v ack-grep 2> /dev/null` ]; then
   alias ack="ack-grep"
