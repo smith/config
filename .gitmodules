@@ -128,3 +128,6 @@
 [submodule "extra/oh-my-zsh"]
 	path = extra/oh-my-zsh
 	url = git@github.com:smith/oh-my-zsh.git
+[submodule "vimfiles/bundle/vimux"]
+	path = vimfiles/bundle/vimux
+	url = git://github.com/benmills/vimux.git
