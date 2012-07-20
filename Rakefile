@@ -6,6 +6,10 @@ def windows?
   !ENV["windir"].nil?
 end
 
+def home
+  ENV['HOME']
+end
+
 task :default => [:install]
 desc "Install configuration files"
 task :install => ['install:default']
@@ -18,7 +22,6 @@ namespace :install do
               "vimfiles" => windows? ? "vimfiles" : ".vim" }
 
       map.each_pair do |here, there|
-        home = ENV["HOME"]
         raise RuntimeError.new("Could not find a home directory. Make sure the HOME environment variable is set. Exiting with no updates") if !home
 
         here = File.join(Dir.getwd, here)
@@ -42,13 +45,17 @@ namespace :install do
     unless windows?
       `git submodule update extra/*`
       Dir["extra/**/*"].each do |f|
-        dest = File.join(ENV["HOME"], ".#{f.gsub(/^extra\//, "")}")
+        dest = File.join(home, ".#{f.gsub(/^extra\//, "")}")
         if File.directory?(f)
           mkdir_p(dest)
         else
           ln_s(File.expand_path(f), dest, :force => true)
         end
-
+      end
+      # symlink everything in ~/.bin to ~/bin
+      Dir[File.join(home, ".bin/*")].each do |bin|
+        ln_s(File.expand_path(bin),
+             File.join(home, 'bin', File.basename(bin)), :force => true)
       end
     end
   end
