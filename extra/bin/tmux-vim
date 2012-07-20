@@ -1,0 +1,242 @@
+#!/bin/bash
+
+#------------------------------------------------------------------------------
+# tmux-vim
+#
+# Persistent vim panes within tmux.
+#
+# Usage:
+#
+#   tmux-vim [file [files...]]
+#
+# Configuration:
+#
+#   TMUX_VIM_VIM_ARGS - command-line args to pass to vim (default none)
+#   TMUX_VIM_VIM_BIN  - executable to use for vim (default vim)
+#   TMUX_VIM_VIM_WINDOW_WIDTH - how wide a single vim pane is (default 80)
+#   TMUX_VIM_VIM_WINDOW_COUNT - how many vim panes to create
+#
+# If TMUX_VIM_VIM_WINDOW_COUNT is not set, then it will be set as large as
+# possible while keeping the shell pane width at least TMUX_VIM_SHELL_WIDTH
+# (default 132)
+#------------------------------------------------------------------------------
+
+#------------------------------------------------------------------------------
+# Copyright (c) 2012, Stephen Thirlwall
+# All rights reserved.
+#
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions are met:
+# * Redistributions of source code must retain the above copyright
+#   notice, this list of conditions and the following disclaimer.
+# * Redistributions in binary form must reproduce the above copyright
+#   notice, this list of conditions and the following disclaimer in the
+#   documentation and/or other materials provided with the distribution.
+# * The name of Stephen Thirlwall may not be used to endorse or promote products
+#   derived from this software without specific prior written permission.
+#
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+# AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+# IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+# DISCLAIMED. IN NO EVENT SHALL STEPHEN THIRLWALL BE LIABLE FOR ANY
+# DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+# (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+# LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+# ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+# (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+# SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#------------------------------------------------------------------------------
+
+_tmux_vim_window_id() {
+    tmux lsp -a -F '#{pane_id}=#{window_index}' | grep ^$TMUX_PANE= | cut -d= -f2
+}
+
+# _tmux_vim_store key value
+# - stores key/value pair in tmux environment
+# - appends window id to key so this is a per-window setting
+# - much thanks to Romain Francoise for help with this!
+_tmux_vim_store() {
+    tmux set-environment "${1}_$( _tmux_vim_window_id )" "$2"
+}
+
+# _tmux_vim_fetch key
+# - retrieves value from tmux environment
+# - appends window id to key so this is a per-window setting
+# - much thanks to Romain Francoise for help with this!
+_tmux_vim_fetch() {
+    tmux show-environment | grep "^${1}_$( _tmux_vim_window_id )=" | cut -d= -f2-
+}
+
+_tmux_vim_fetch_or_store() {
+    if [[ $# -gt 1 ]]; then
+        _tmux_vim_store "$@"
+    else
+        _tmux_vim_fetch "$@"
+    fi
+}
+
+_tmux_vim_pane_id() {
+    _tmux_vim_fetch_or_store tmux_vim_pane "$@"
+}
+
+_tmux_vim_last_dir() {
+    _tmux_vim_fetch_or_store tmux_vim_last_dir "$@"
+}
+
+# _tmux_vim_send_keys [keystrokes...]
+# - sends keystrokes to the vim instance created by tmux_vim
+# - keystroke syntax is the same as tmux send-keys
+_tmux_vim_send_keys() {
+    tmux send-keys -t $( _tmux_vim_pane_id ) "$@"
+}
+
+_tmux_vim_is_running() {
+    local pane_id=$( _tmux_vim_pane_id )
+    [[ -n $pane_id ]] && tmux lsp -F '#{pane_id}' | grep -q ^$pane_id$
+}
+
+# _tmux_vim_tmux_version
+# - return the current tmux version
+# - only works for tmux >= 1.5 (but we already checked that)
+_tmux_vim_tmux_version() {
+    tmux -V | cut -d' ' -f2
+}
+
+# _tmux_vim_pre_flight_checks
+# - make sure all requirements are okay before continuing
+_tmux_vim_pre_flight_checks() {
+    # Check that tmux is actually running
+    if [[ -z "$TMUX" ]]; then
+        echo tmux session not detected 1>&2
+        return 1
+    fi
+
+    # Check that tmux supports the -V command (>= v1.5)
+    if ! tmux -V 1>/dev/null 2>/dev/null ; then
+        echo tmux 1.6 or greater is required 1>&2
+        return 1
+    fi
+
+    # Check tmux is v1.6 or greater
+    if [[ $( _tmux_vim_tmux_version ) < 1.6 ]]; then
+        echo tmux 1.6 or greater is required 1>&2
+        return 1
+    fi
+
+    return 0
+}
+
+# _tmux_vim_op <op> <file>
+# - does _tmux_vim_send_keys :$op space $file
+# - escapes spaces correctly in $file
+_tmux_vim_op() {
+    # Backslash escape all spaces in the file name
+    _tmux_vim_send_keys :$1 space "${2// /\\ }" enter
+}
+
+# _tmux_vim_start [number-of-panes]
+# - split a new tmux pane and start vim in it
+# - the pane id is stored as tmux_vim_pane, using _tmux_vim_store
+_tmux_vim_start() {
+    if _tmux_vim_is_running; then
+        # tmux_vim already exists - try to select that pane
+        tmux select-pane -t $( _tmux_vim_pane_id ) && return
+
+        # If we get here, that pane no longer exists, so fall thru
+        # (shouldn't happen)
+    fi
+
+    local tmux_vim_pane_split=${TMUX_VIM_SPLIT:-'HORIZONTAL'}
+
+    if [ ${tmux_vim_pane_split} == 'HORIZONTAL' ];then
+        local split_method='h'
+        local vim_width=${TMUX_VIM_VIM_WIDTH:-80}
+        local shell_width=${TMUX_VIM_SHELL_WIDTH:-132}
+        #TODO: change client_height to client_width when tmux 1.7 arrives
+        local screen_width=$( tmux lsc -t $TMUX_PANE -F '#{client_height}' )
+        local screen_width_left=$[ $screen_width - $shell_width ]
+        if [ -n "${TMUX_VIM_VIM_WINDOW_WIDTH}" ] || [ -n "${TMUX_VIM_VIM_WINDOW_COUNT}" ];then
+            local vim_window_width=${TMUX_VIM_VIM_WINDOW_WIDTH:-$vim_width}
+            local vim_window_count=$[ $screen_width_left / ( $vim_window_width + 1 ) ]
+            local vim_window_count=$[ $vim_window_count > 0 ? $vim_window_count : 1 ]
+            # $vim_window_count is maximum count current screen width can handle,
+            # $TMUX_VIM_VIM_WINDOW_COUNT should not overcome that.
+            [ -n "${TMUX_VIM_VIM_WINDOW_COUNT}" ] && \
+            local vim_window_count=$[ $TMUX_VIM_VIM_WINDOW_COUNT < $vim_window_count ? $TMUX_VIM_VIM_WINDOW_COUNT : $vim_window_count ]
+            local split_width=$[ ($vim_window_width + 1) * $vim_window_count - 1 ]
+
+            [ "${TMUX_VIM_VIM_WINDOW_SPLIT}" == 'TRUE' ] && local vim_args+=" -O$vim_window_count"
+        else
+            if [ $screen_width_left -lt $vim_width ];then
+                local split_width=$vim_width
+            else
+                local split_width=$screen_width_left
+            fi
+        fi
+        local split_size=${split_width}
+    else
+        local split_method='v'
+        local shell_height=${TMUX_VIM_SHELL_HEIGHT:-15}
+        local split_height=$shell_height
+        local split_size=${split_height}
+    fi
+
+    local vim_args=$TMUX_VIM_VIM_ARGS
+    local vim_bin=${TMUX_VIM_VIM_BIN:-vim}
+
+    # Split a new pane, start vim in it, and record the pane index
+    local tmux_vim_pane=$(tmux split-window -P -$split_method -l $split_size \
+                        "exec $vim_bin $vim_args")
+
+    # Now convert the pane index into a global persistent id
+    # 0:1.1: [100x88] [history 0/10000, 0 bytes] %2
+    # ^^^^^ $tmux_vim_pane                  pane_id  ^^
+    _tmux_vim_pane_id $(tmux lsp -a | grep ^${tmux_vim_pane}: | grep -o '%[0-9]\+')
+    _tmux_vim_last_dir "$PWD"
+
+    if [ ${tmux_vim_pane_split} != 'HORIZONTAL' ]; then
+        tmux swap-pane -UD
+    fi
+}
+
+# tmux_vim [files...]
+# - if no existing tmux_vim instance is running, a new one is spawned
+# - opens the listed files inside the tmux_vim instance
+tmux_vim() {
+    [ -f "$HOME/.tmux-vim.conf" ] && source "$HOME/.tmux-vim.conf"
+
+    _tmux_vim_pre_flight_checks || exit 1
+    _tmux_vim_start
+    _tmux_vim_send_keys escape  # make sure we're in command mode
+
+    if [[ $# -gt 0 ]]; then
+
+        # If we are now in a different directory than $TDIR, we want to make
+        # vim switch to this directory temporarily before opening the files.
+        # This obviates any relative path computations.
+        [[ "$PWD" != "$( _tmux_vim_last_dir )" ]] && _tmux_vim_op cd "$PWD"
+
+        # Rather than :edit each file in turn, :badd each file into a new
+        # buffer, and then finally switch to the last one with :buffer.
+        # This is to handle the situation where the current buffer is unsaved,
+        # and an :edit command will cause vim to prompt the user to save,
+        # abandon or cancel.
+        # If we just :edit each file, things just don't work out naturally;
+        # cancel works, but yes/no end up with only the first file opened.
+        # Errant escape keys cause the whole open to just silently fail.
+        # This approach pushes the user interaction right to the end.
+        for file in "$@"; do
+            _tmux_vim_op badd "$file"   # load a buffer for each file
+        done
+
+        [[ "$PWD" != "$( _tmux_vim_last_dir )" ]] && _tmux_vim_op cd -
+
+        _tmux_vim_op 1bw          # delete the 1st empty buffer
+        _tmux_vim_op sblast       # switch to the final file
+    fi
+
+    tmux select-pane -t $( _tmux_vim_pane_id )
+}
+
+tmux_vim "$@"
+

@@ -1,0 +1,200 @@
+#!/bin/bash
+
+version="0.0.8"
+
+OS=`uname`
+
+cyan=""
+purple=""
+reset=""
+
+if which tput &> /dev/null; then
+    cyan=$(tput setaf 6)
+    purple=$(tput setaf 5)
+    reset=$(tput sgr0)
+fi
+
+ltdir=~/.lighttable
+ltsettings=$ltdir/settings
+ltbin=$ltdir/bin
+ltpids=$ltdir/pids
+ltzip=$ltdir/lt.zip
+lttemp=$ltdir/temp
+ltlogs=$ltdir/logs
+latestVersion="http://app.kodowa.com/latest-version"
+remoteMe="https://s3.amazonaws.com/temp2.kodowa.com/playground/light"
+localLt="http://localhost:8833/"
+
+#intentionally add a line for clarity
+echo ""
+
+# Check deps
+if ! which java &> /dev/null; then
+    echo "$purple --- Java must be installed. Please install Java6 and try again.$reset"
+    exit 1
+fi
+if which curl &> /dev/null; then
+    curl=1
+elif which wget &> /dev/null; then
+    wget=1
+else
+    echo "You must have curl or wget installed."
+    echo "There can be no light without a way..."
+    exit 1
+fi
+
+#functions
+
+function distro {
+    echo "https://s3.amazonaws.com/temp2.kodowa.com/playground/releases/$1.zip"
+}
+
+function remote-get {
+    if [ $curl ]; then
+        curl -o $1 $2
+    elif [ $wget ]; then
+        wget -O $1 $2
+    fi
+}
+
+function fetch-zip {
+    remote-get $ltzip $(distro $1)
+}
+
+function unpack {
+    unzip -o -q $ltzip -d $ltbin
+    rm $ltzip
+}
+
+if [ ! -d $ltdir ]; then
+    echo "$cyan --- Creating ~/.lighttable $reset"
+    mkdir $ltdir
+    mkdir $ltsettings
+    mkdir $ltbin
+    mkdir $ltpids
+    mkdir $ltlogs
+    echo "$cyan --- Fetching latest... $reset"
+    fetch-zip $version
+    unpack
+fi
+
+function server-handler {
+    case $1 in
+        start)
+            rm -f $ltpids/server-up.pid
+            echo "$purple --- Starting server... (this takes several seconds) $reset"
+	        nohup java -jar $ltbin/lighttable-full.jar prod 2>&1 1>> $ltlogs/server.log &
+	        echo $! > $ltpids/server.pid
+            while [ ! -f $ltpids/server-up.pid ]; do
+                sleep 1
+            done
+            rm -f $ltpids/server-up.pid
+            echo "$purple --- Server up! $reset"
+            ;;
+        stop)
+            if [ -f $ltpids/server.pid ]; then
+                echo "$purple --- Stopping server... $reset"
+                process=`cat $ltpids/server.pid`
+                kill $process
+                rm $ltpids/server.pid
+            else
+                echo "$purple --- Server is not running. $reset"
+            fi
+
+            ;;
+        restart)
+            $0 server stop
+            sleep 1
+            $0 server start
+            ;;
+        *)
+            echo "$cyan --- Server commands: [ ${purple}start${reset} | ${purple}stop${reset} | ${purple}restart${reset} $cyan] $reset"
+            ;;
+    esac
+}
+
+function fetch {
+    if [ $curl ]; then
+        echo $(curl -s $1)
+    elif [ $wget ]; then
+        echo $(wget --quiet -O- $1)
+    fi
+}
+
+function check-version {
+    ver=$(fetch $latestVersion)
+    if [ $ver != $version ]; then
+        echo $ver
+    else
+        echo ""
+    fi
+}
+
+case $1 in
+    update)
+        echo "$cyan --- Updating $(which $0)... $reset"
+        if [ "$2" = "" ]; then
+            newVersion=$(check-version)
+        else
+            newVersion=$2
+        fi
+        loc=$(which $0)
+        remote-get $loc $remoteMe
+        $0 fetch $newVersion
+        ;;
+    fetch)
+        if [ "$2" = "" ]; then
+            echo "You must provide a version"
+            exit 0
+        fi
+        server-handler stop
+        echo "$cyan --- Fetching Light Table $2 $reset"
+        fetch-zip $2
+        unpack
+        $0 server start
+        ;;
+    server)
+        server-handler $2
+        ;;
+    table)
+        echo "$cyan --- Checking for updates... $reset"
+        if [ $(check-version) ]; then
+            echo "$cyan --- Found a new version! $reset"
+            $0 update
+        fi
+        if [ ! -f $ltpids/server.pid ]; then
+            server-handler start
+        else
+            serverPid=`ps -p $(cat $ltpids/server.pid) | grep -i java`
+            if [ ! "$serverPid" ]; then
+                server-handler start
+            fi
+        fi
+        if [ "$OS" = "Linux" ]; then
+            if which google-chrome &> /dev/null; then
+                echo "$purple --- Starting Chrome $reset"
+                google-chrome $localLt
+            elif which chromium &> /dev/null; then
+                echo "$purple --- Starting chromium $reset"
+                chromium $localLt
+            elif which firefox &> /dev/null; then
+                echo "$purple --- Starting Firefox $reset"
+                firefox $localLt
+            else
+                echo "$purple --- No browser found $reset"
+                echo "$puple --- Open $localLt in a browser $reset"
+            fi
+        fi
+        if [ "$OS" = "Darwin" ]; then
+            open $ltbin/Light\ Table.app
+        fi
+        ;;
+    *)
+        echo "$cyan --- Available commands: [ ${purple}server${reset} | ${purple}update${reset} | ${purple}table${reset} $cyan] $reset"
+        ;;
+esac
+
+#intentionally add a line for clarity
+echo ""
+
+
