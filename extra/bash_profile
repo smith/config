@@ -19,17 +19,23 @@ else
   alias o="vim"
 fi
 
+# Use wemux instead of tmux if it's available
+if [ `command -v wemux 2> /dev/null` ]; then
+  alias tmux=wemux
+fi
+
 # Alias mvim (MacVim) to vim and make EDITOR if available
 if [ `command -v mvim 2> /dev/null` ]; then
   if [ $TMUX ] && [ `command -v tmux-vim 2> /dev/null` ]
   then
     alias vi="tmux-vim"
     alias vim="tmux-vim"
+    export EDITOR="tmux-vim"
   else
-    alias vi="mvim"
-    alias vim="mvim"
+    alias vi="mvim -v"
+    alias vim="mvim -v"
+    export EDITOR="mvim -v"
   fi
-  export EDITOR="mvim -f"
   export GEM_EDITOR="open" # This is for the gem-open gem on a Mac
 fi
 
