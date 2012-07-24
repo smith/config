@@ -49,8 +49,16 @@ if [ `command -v pydf 2> /dev/null` ]; then
   alias df="pydf"
 fi
 
-alias incanter="(cd ~/incanter && rlwrap script/repl)"
-alias lisp="rlwrap clj"
+# Lisp stuff
+if [ `command -v light 2> /dev/null` ]; then
+  alias lisp="light table"
+elif [ `command -v clj 2> /dev/null` ]; then
+  alias lisp="rlwrap clj"
+fi
+
+if [ `command -v $HOME/incanter/script/repl 2> /dev/null` ]; then
+  alias incanter="(cd $HOME/incanter && rlwrap script/repl)"
+fi
 
 # Load RVM into a shell session
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm"
