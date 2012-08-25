@@ -122,9 +122,6 @@
 [submodule "vimfiles/bundle/csv.vim"]
 	path = vimfiles/bundle/csv.vim
 	url = git://github.com/vim-scripts/csv.vim.git
-[submodule "vimfiles/bundle/vim-slime"]
-	path = vimfiles/bundle/vim-slime
-	url = git://github.com/jpalardy/vim-slime.git
 [submodule "extra/oh-my-zsh"]
 	path = extra/oh-my-zsh
 	url = git@github.com:smith/oh-my-zsh.git
