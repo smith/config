@@ -50,8 +50,8 @@ if [ `command -v pydf 2> /dev/null` ]; then
 fi
 
 # Lisp stuff
-if [ `command -v light 2> /dev/null` ]; then
-  alias lisp="light table"
+if [ -f ~/.lighttable/launcher.jar ]; then
+  alias lisp="java -jar ~/.lighttable/launcher.jar"
 elif [ `command -v clj 2> /dev/null` ]; then
   alias lisp="rlwrap clj"
 fi
