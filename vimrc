@@ -159,9 +159,17 @@ au FileType conque_term set nospell
 
 " MacVim
 if has("gui_macvim")
-    set transp=1
-    set anti enc=utf-8 gfn=Menlo:h14,Monaco:h14
-    set fuoptions=maxvert,maxhorz
+  set transp=1
+  set anti enc=utf-8 gfn=Menlo:h14,Monaco:h14
+  set fuoptions=maxvert,maxhorz
+
+  " Copy/paste on mac
+  " (http://www.drbunsen.org/text-triumvirate.html#vim)
+  " Yank text to the OS X clipboard
+  noremap <leader>y "*y
+  noremap <leader>yy "*Y
+  " Preserve indentation while pasting text from the OS X clipboard
+  noremap <leader>p :set paste<CR>:put  *<CR>:set nopaste<CR>
 endif
 
 " Windows
