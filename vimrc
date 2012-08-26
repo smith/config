@@ -78,6 +78,11 @@ set cursorline
 set scrolloff=3
 colorscheme desert256
 
+" tslime.vim
+vmap <C-c><C-c> <Plug>SendSelectionToTmux
+nmap <C-c><C-c> <Plug>NormalModeSendToTmux
+nmap <C-c>r <Plug>SetTmuxVars
+
 " Fix folded highlight in terminal
 highlight Folded ctermfg=Yellow ctermbg=NONE
 highlight FoldColumn ctermfg=Yellow ctermbg=NONE

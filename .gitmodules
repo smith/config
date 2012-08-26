@@ -128,3 +128,6 @@
 [submodule "vimfiles/bundle/vimux"]
 	path = vimfiles/bundle/vimux
 	url = git://github.com/benmills/vimux.git
+[submodule "vimfiles/bundle/tslime.vim"]
+	path = vimfiles/bundle/tslime.vim
+	url = git://github.com/jgdavey/tslime.vim.git
