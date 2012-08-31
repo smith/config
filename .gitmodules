@@ -131,3 +131,6 @@
 [submodule "vimfiles/bundle/tslime.vim"]
 	path = vimfiles/bundle/tslime.vim
 	url = git://github.com/jgdavey/tslime.vim.git
+[submodule "vimfiles/bundle/VimClojure"]
+	path = vimfiles/bundle/VimClojure
+	url = git://github.com/vim-scripts/VimClojure.git

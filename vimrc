@@ -132,7 +132,9 @@ function! JavaScriptFold()
 endfunction
 
 " Lisp
-au BufRead,BufNewFile,BufWrite {*.clj,*.scm,*.scheme} set ft=lisp
+au BufRead,BufNewFile,BufWrite {*.scm,*.scheme} set ft=lisp
+let g:vimclojure#HighlightBuiltins=1      " Highlight Clojure's builtins
+let g:vimclojure#ParenRainbow=1           " Rainbow parentheses'!
 
 " FIXME: When js in rails projects is being edited, it uses 2 spaces. Figure
 "        out how to not have rails.vim override this
