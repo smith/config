@@ -31,6 +31,9 @@ if [ `command -v mvim 2> /dev/null` ]; then
     alias vi="tmux-vim"
     alias vim="tmux-vim"
     export EDITOR="tmux-vim"
+
+    # Aliases for knife
+    alias knife="EDITOR='mvim -v -f' knife"
   else
     alias vi="mvim -v"
     alias vim="mvim -v"
