@@ -133,6 +133,8 @@ endfunction
 
 " Lisp
 au BufRead,BufNewFile,BufWrite {*.scm,*.scheme} set ft=lisp
+au BufRead,BufNewFile,BufWrite {*.cljs} set ft=clojure
+au BufRead,BufNewFile,BufWrite {*.clj,*.cljs} set nospell
 let g:vimclojure#HighlightBuiltins=1      " Highlight Clojure's builtins
 let g:vimclojure#ParenRainbow=1           " Rainbow parentheses'!
 
