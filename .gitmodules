@@ -56,9 +56,6 @@
 [submodule "vimfiles/bundle/bufexplorer"]
 	path = vimfiles/bundle/bufexplorer
 	url = git://github.com/vim-scripts/bufexplorer.zip.git
-[submodule "vimfiles/bundle/vim-rooter"]
-	path = vimfiles/bundle/vim-rooter
-	url = git://github.com/airblade/vim-rooter.git
 [submodule "vimfiles/bundle/ack.vim"]
 	path = vimfiles/bundle/ack.vim
 	url = git://github.com/mileszs/ack.vim.git
