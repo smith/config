@@ -86,9 +86,6 @@
 [submodule "vimfiles/bundle/jshint.vim"]
 	path = vimfiles/bundle/jshint.vim
 	url = https://github.com/manalang/jshint.vim.git
-[submodule "vimfiles/bundle/browser-refresh.vim"]
-	path = vimfiles/bundle/browser-refresh.vim
-	url = git://github.com/mkitt/browser-refresh.vim.git
 [submodule "vimfiles/bundle/NrrwRgn"]
 	path = vimfiles/bundle/NrrwRgn
 	url = git://github.com/chrisbra/NrrwRgn.git
@@ -98,9 +95,6 @@
 [submodule "extra/oh-my-zsh"]
 	path = extra/oh-my-zsh
 	url = git@github.com:smith/oh-my-zsh.git
-[submodule "vimfiles/bundle/vimux"]
-	path = vimfiles/bundle/vimux
-	url = git://github.com/benmills/vimux.git
 [submodule "vimfiles/bundle/tslime.vim"]
 	path = vimfiles/bundle/tslime.vim
 	url = git://github.com/jgdavey/tslime.vim.git
