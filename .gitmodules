@@ -38,9 +38,6 @@
 [submodule "vimfiles/bundle/vim-endwise"]
 	path = vimfiles/bundle/vim-endwise
 	url = git://github.com/tpope/vim-endwise.git
-[submodule "vimfiles/bundle/TaskList.vim"]
-	path = vimfiles/bundle/TaskList.vim
-	url = git://github.com/vim-scripts/TaskList.vim.git
 [submodule "vimfiles/bundle/vim-css-color"]
 	path = vimfiles/bundle/vim-css-color
 	url = git://github.com/skammer/vim-css-color.git
