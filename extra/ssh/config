@@ -1,1 +1,3 @@
 ForwardAgent yes
+Host *
+  ServerAliveInterval 120
