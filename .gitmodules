@@ -77,9 +77,6 @@
 [submodule "vimfiles/bundle/VimCalc"]
 	path = vimfiles/bundle/VimCalc
 	url = git://github.com/gregsexton/VimCalc.git
-[submodule "vimfiles/bundle/vim-ruby-runner"]
-	path = vimfiles/bundle/vim-ruby-runner
-	url = git://github.com/henrik/vim-ruby-runner.git
 [submodule "vimfiles/bundle/vim-coffee-script"]
 	path = vimfiles/bundle/vim-coffee-script
 	url = git://github.com/kchmck/vim-coffee-script.git
@@ -95,9 +92,6 @@
 [submodule "vimfiles/bundle/vim-extradite"]
 	path = vimfiles/bundle/vim-extradite
 	url = git://github.com/int3/vim-extradite.git
-[submodule "vimfiles/bundle/MailApp"]
-	path = vimfiles/bundle/MailApp
-	url = git://github.com/vim-scripts/MailApp.git
 [submodule "vimfiles/bundle/jshint.vim"]
 	path = vimfiles/bundle/jshint.vim
 	url = https://github.com/manalang/jshint.vim.git
