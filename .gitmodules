@@ -65,9 +65,6 @@
 [submodule "vimfiles/bundle/jshint.vim"]
 	path = vimfiles/bundle/jshint.vim
 	url = https://github.com/manalang/jshint.vim.git
-[submodule "vimfiles/bundle/NrrwRgn"]
-	path = vimfiles/bundle/NrrwRgn
-	url = git://github.com/chrisbra/NrrwRgn.git
 [submodule "vimfiles/bundle/csv.vim"]
 	path = vimfiles/bundle/csv.vim
 	url = git://github.com/vim-scripts/csv.vim.git
