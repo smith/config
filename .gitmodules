@@ -23,9 +23,6 @@
 [submodule "vimfiles/bundle/vim-ragtag"]
 	path = vimfiles/bundle/vim-ragtag
 	url = git://github.com/tpope/vim-ragtag.git
-[submodule "vimfiles/bundle/supertab"]
-	path = vimfiles/bundle/supertab
-	url = git://github.com/ervandew/supertab.git
 [submodule "vimfiles/bundle/vim-surround"]
 	path = vimfiles/bundle/vim-surround
 	url = git://github.com/tpope/vim-surround.git
