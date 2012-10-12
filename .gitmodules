@@ -44,9 +44,6 @@
 [submodule "vimfiles/bundle/ack.vim"]
 	path = vimfiles/bundle/ack.vim
 	url = git://github.com/mileszs/ack.vim.git
-[submodule "vimfiles/bundle/Align"]
-	path = vimfiles/bundle/Align
-	url = git://github.com/vim-scripts/Align.git
 [submodule "vimfiles/bundle/textile.vim"]
 	path = vimfiles/bundle/textile.vim
 	url = git://github.com/timcharper/textile.vim.git
