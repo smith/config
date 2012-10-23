@@ -49,6 +49,9 @@ let mapleader=","
 let g:mapleader=","
 map <leader>d :execute 'NERDTreeToggle ' . getcwd()<CR>
 
+"remap shift tab to be omni-complete
+inoremap <S-TAB> <C-X><C-O>
+
 " Inserts the path of the currently edited file into a command
 " Command mode: Ctrl+P
 " (stolen from Janus)
