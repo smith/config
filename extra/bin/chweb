@@ -1,0 +1,8 @@
+#!/bin/sh
+#
+# Makes a symlink from the given directory to /Library/Webserver/Documents. On a
+# Mac with Apache configured, this makes it the default web site on
+# http://localhost.
+sudo ln -nsf `(cd $1; pwd)` /Library/Webserver/Documents
+ls -l /Library/Webserver/Documents
+open http://localhost
