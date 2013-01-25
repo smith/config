@@ -61,12 +61,13 @@ namespace :install do
 end
 
 task :update_vendor do
-  if Dir.exists?('vimfiles/bundle/vundle')
+  vundle_path = 'vimfiles/bundle/vundle'
+  if Dir.exists? vundle_path
     puts "Updating vundle..."
-    `cd vimfiles/bundle/vundle && git fetch origin && git reset --hard origin/master`
+    `cd #{vundle_path} && git fetch origin && git reset --hard origin/master`
   else
     puts "Downloading vundle..."
-    `git clone git://github.com/gmarik/vundle.git vimfiles/bundle/vundle`
+    `git clone git://github.com/gmarik/vundle.git #{vundle_path}`
   end
   puts "Installing bundle..."
   `vim -vf +BundleInstall +qall`
