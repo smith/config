@@ -1,4 +1,3 @@
 vimfiles/.VimballRecord
 vimfiles/.netrwhist
 vimfiles/bundle/*
-!vimfiles/bundle/vundle

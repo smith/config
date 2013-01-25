@@ -61,8 +61,13 @@ namespace :install do
 end
 
 task :update_vendor do
-  puts "Updating submodules..."
-  puts `git submodule init`
-  puts `git submodule update`
-  puts `vim -vf +BundleInstall +qall`
+  if Dir.exists?('vimfiles/bundle/vundle')
+    puts "Updating vundle..."
+    `cd vimfiles/bundle/vundle && git fetch origin && git reset --hard origin/master`
+  else
+    puts "Downloading vundle..."
+    `git clone git://github.com/gmarik/vundle.git vimfiles/bundle/vundle`
+  end
+  puts "Installing bundle..."
+  `vim -vf +BundleInstall +qall`
 end
