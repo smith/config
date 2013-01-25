@@ -43,7 +43,6 @@ namespace :install do
   desc "Install non-vim config files"
   task :extra do
     unless windows?
-      `git submodule update extra/*`
       Dir["extra/**/*"].each do |f|
         dest = File.join(home, ".#{f.gsub(/^extra\//, "")}")
         if File.directory?(f)
