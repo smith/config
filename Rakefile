@@ -65,4 +65,5 @@ task :update_vendor do
   puts "Updating submodules..."
   puts `git submodule init`
   puts `git submodule update`
+  puts `vim -vf +BundleInstall +qall`
 end

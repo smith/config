@@ -1,12 +1,39 @@
 " Nathan L Smith's .vimrc
 " http://github.com/smith/vim-config/
 
-" Pathogen
-filetype off
-call pathogen#runtime_append_all_bundles()
-call pathogen#helptags()
-
 syntax on
+set nocompatible
+
+" Vundle
+filetype off
+set rtp+=~/.vim/bundle/vundle/
+call vundle#rc()
+
+Bundle 'gmarik/vundle'
+Bundle 'int3/vim-extradite'
+Bundle 'jgdavey/tslime.vim'
+Bundle 'kchmck/vim-coffee-script'
+Bundle 'mileszs/ack.vim'
+Bundle 'pangloss/vim-javascript'
+Bundle 'plasticboy/vim-markdown'
+Bundle 'rosstimson/scala-vim-support'
+Bundle 'scrooloose/nerdcommenter'
+Bundle 'scrooloose/nerdtree'
+Bundle 'timcharper/textile.vim'
+Bundle 'tomtom/checksyntax_vim'
+Bundle 'tpope/vim-endwise'
+Bundle 'tpope/vim-fugitive'
+Bundle 'tpope/vim-git'
+Bundle 'tpope/vim-ragtag'
+Bundle 'tpope/vim-rails'
+Bundle 'tpope/vim-surround'
+Bundle 'vim-ruby/vim-ruby'
+
+Bundle 'csv.vim'
+Bundle 'LargeFile'
+Bundle 'TwitVim'
+Bundle 'VimClojure'
+
 filetype plugin indent on
 
 " General options
