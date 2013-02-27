@@ -218,3 +218,9 @@ if has("win32")
     source $VIMRUNTIME/mswin.vim
     set guifont=Consolas:h13:cANSI,Anonymous\ Pro:h13:cANSI
 endif
+
+" Git shortcuts
+function! s:GitCheckout(...)
+  :silent execute 'Git checkout ' . a:1 . ' > /dev/null 2>&1' | redraw!
+endfunction
+command! -nargs=1 Gc call s:GitCheckout(<f-args>)
