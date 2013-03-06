@@ -1,3 +1,10 @@
 ForwardAgent yes
 Host *
   ServerAliveInterval 120
+
+# This is for a thing at work. Nothing to see here.
+# use git clone git@hs2.github.com:... to use the alternate key.
+Host hs2.github.com
+  Hostname github.com
+  User git
+  IdentityFile ~/.ssh/nathansmithhs2_rsa
