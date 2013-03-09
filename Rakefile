@@ -52,6 +52,7 @@ namespace :install do
         end
       end
       # symlink everything in ~/.bin to ~/bin
+      mkdir_p(File.join(home, 'bin'))
       Dir[File.join(home, ".bin/*")].each do |bin|
         ln_s(File.expand_path(bin),
              File.join(home, 'bin', File.basename(bin)), :force => true)
