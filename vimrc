@@ -10,8 +10,10 @@ set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
 
 Bundle 'gmarik/vundle'
+Bundle 'guns/vim-clojure-static'
 Bundle 'int3/vim-extradite'
 Bundle 'jgdavey/tslime.vim'
+"Bundle 'justincampbell/vim-eighties'
 Bundle 'kchmck/vim-coffee-script'
 Bundle 'mileszs/ack.vim'
 Bundle 'othree/html5.vim'
@@ -22,7 +24,9 @@ Bundle 'scrooloose/nerdcommenter'
 Bundle 'scrooloose/nerdtree'
 Bundle 'timcharper/textile.vim'
 Bundle 'tomtom/checksyntax_vim'
+Bundle 'tpope/vim-classpath'
 Bundle 'tpope/vim-endwise'
+Bundle 'tpope/vim-fireplace'
 Bundle 'tpope/vim-fugitive'
 Bundle 'tpope/vim-git'
 Bundle 'tpope/vim-ragtag'
@@ -33,7 +37,6 @@ Bundle 'vim-ruby/vim-ruby'
 Bundle 'csv.vim'
 Bundle 'LargeFile'
 Bundle 'TwitVim'
-Bundle 'VimClojure'
 
 filetype plugin indent on
 
