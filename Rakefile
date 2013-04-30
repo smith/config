@@ -63,10 +63,11 @@ end
 
 task :update_vendor do
   vundle_path = 'vimfiles/bundle/vundle'
-  if Dir.exists? vundle_path
+  begin
+    Dir.entries(vundle_path) # Will raise if does not exist
     puts "Updating vundle..."
     `cd #{vundle_path} && git fetch origin && git reset --hard origin/master`
-  else
+  rescue Errno::ENOENT => e
     puts "Downloading vundle..."
     `git clone git://github.com/gmarik/vundle.git #{vundle_path}`
   end
