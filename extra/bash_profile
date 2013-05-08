@@ -1,6 +1,6 @@
 export EDITOR=vim
-export PATH=./node_modules/.bin:$HOME/bin:$HOME/.rbenv/shims:/usr/local/bin:/usr/local/sbin:$PATH
-export NODE_PATH=./node_modules:$HOME/.node_modules:/usr/local/lib/node_modules:$NODE_PATH
+export PATH=./node_modules/.bin:$HOME/bin:$HOME/.rbenv/shims:/usr/local/share/npm/bin:/usr/local/bin:/usr/local/sbin:/usr/local/share/python:$PATH
+export NODE_PATH=./node_modules:$HOME/.node_modules:/usr/local/share/npm/lib/node_modules:$NODE_PATH
 
 # Load .bashrc
 [[ -s "$HOME/.bashrc" ]] && source "$HOME/.bashrc"
@@ -49,5 +49,13 @@ if [ `command -v rbenv 2> /dev/null` ]; then
   eval "$(rbenv init -)"
 fi
 
+# hub
+if [ `command -v hub 2> /dev/null` ]; then
+  alias git="hub"
+fi
+
 # Git Situational Awareness
 [[ -s "$HOME/.git_sit_awareness.sh" ]] && source "$HOME/.git_sit_awareness.sh"
+
+# chef configs
+[[ -f "$HOME/.chef-env" ]] && source "$HOME/.chef-env"

@@ -10,9 +10,9 @@ set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
 
 Bundle 'gmarik/vundle'
+Bundle 'digitaltoad/vim-jade'
 Bundle 'guns/vim-clojure-static'
 Bundle 'int3/vim-extradite'
-Bundle 'justincampbell/vim-eighties'
 Bundle 'kchmck/vim-coffee-script'
 Bundle 'mileszs/ack.vim'
 Bundle 'othree/html5.vim'

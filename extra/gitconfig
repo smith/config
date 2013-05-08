@@ -32,3 +32,5 @@
   untracked = cyan
 [core]
 	excludesfile = ~/.gitignore
+[push]
+	default = simple
