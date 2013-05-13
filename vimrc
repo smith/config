@@ -112,11 +112,6 @@ set cursorline
 set scrolloff=3
 colorscheme desert256
 
-" tslime.vim
-vmap <C-c><C-c> <Plug>SendSelectionToTmux
-nmap <C-c><C-c> <Plug>NormalModeSendToTmux
-nmap <C-c>r <Plug>SetTmuxVars
-
 " Fix folded highlight in terminal
 highlight Folded ctermfg=Yellow ctermbg=NONE
 highlight FoldColumn ctermfg=Yellow ctermbg=NONE
@@ -126,6 +121,9 @@ highlight ExtraWhitespace guibg=DarkCyan ctermbg=Blue
 au ColorScheme * highlight ExtraWhitespace guibg=DarkCyan ctermbg=Blue
 au BufWinEnter * match ExtraWhitespace /\s\+$\| \+\ze\t/
 au BufWrite * match ExtraWhitespace /\s\+$\| \+\ze\t/
+
+" Use ag for :Ack
+let g:ackprg = 'ag --nogroup --nocolor --column'
 
 function! Indent4Spaces()
   set tabstop=4
@@ -186,19 +184,6 @@ au FileType php setl foldlevel=99
 
 " Python
 au FileType python call Indent4Spaces()
-
-" ConqueTerm
-function! s:Terminal(...)
-  if a:0 > 0
-    let l:cmd = a:1
-  else
-    let l:cmd = 'bash --login'
-  endif
-  execute 'ConqueTermSplit ' . l:cmd
-endfunction
-command! -nargs=? Terminal call s:Terminal(<f-args>)
-au FileType conque_term highlight ExtraWhitespace guibg=NONE ctermbg=NONE
-au FileType conque_term set nospell
 
 " MacVim
 if has("gui_macvim")
