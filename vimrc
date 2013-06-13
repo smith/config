@@ -9,18 +9,20 @@ filetype off
 set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
 
-Bundle 'gmarik/vundle'
+Bundle 'airblade/vim-gitgutter'
 Bundle 'digitaltoad/vim-jade'
+Bundle 'gmarik/vundle'
 Bundle 'guns/vim-clojure-static'
 Bundle 'int3/vim-extradite'
 Bundle 'kchmck/vim-coffee-script'
+Bundle 'kien/ctrlp.vim'
 Bundle 'mileszs/ack.vim'
 Bundle 'othree/html5.vim'
 Bundle 'pangloss/vim-javascript'
 Bundle 'plasticboy/vim-markdown'
 Bundle 'scrooloose/nerdcommenter'
 Bundle 'scrooloose/nerdtree'
-Bundle 'tomtom/checksyntax_vim'
+Bundle 'scrooloose/syntastic'
 Bundle 'tpope/vim-classpath'
 Bundle 'tpope/vim-dispatch'
 Bundle 'tpope/vim-endwise'
@@ -35,6 +37,7 @@ Bundle 'vim-ruby/vim-ruby'
 
 Bundle 'csv.vim'
 Bundle 'LargeFile'
+Bundle 'TaskList.vim'
 Bundle 'TwitVim'
 
 filetype plugin indent on
@@ -77,7 +80,15 @@ cmap w!! w !sudo tee % >/dev/null
 " Key Mappings
 let mapleader=","
 let g:mapleader=","
-map <leader>d :execute 'NERDTreeToggle ' . getcwd()<CR>
+
+" <CTRL-P> for ctrlp.vim
+let g:ctrlp_map = '<C-P>'
+
+" Resize window to 80 width with ,8
+map <leader>8 :vertical resize 80<CR>
+
+" ,d for dispatch
+map <leader>d :Dispatch<CR>
 
 "remap shift tab to be omni-complete
 inoremap <S-TAB> <C-X><C-O>
@@ -122,6 +133,10 @@ au ColorScheme * highlight ExtraWhitespace guibg=DarkCyan ctermbg=Blue
 au BufWinEnter * match ExtraWhitespace /\s\+$\| \+\ze\t/
 au BufWrite * match ExtraWhitespace /\s\+$\| \+\ze\t/
 
+" Spelling highlights
+highlight clear SpellBad
+highlight SpellBad cterm=underline ctermfg=red
+
 " Use ag for :Ack
 let g:ackprg = 'ag --nogroup --nocolor --column'
 
@@ -134,12 +149,21 @@ endfunction
 " CSS-type things
 au BufRead,BufNewFile,BufWrite {*.less} set ft=css
 
+" Git shortcuts
+function! s:GitCheckout(...)
+  :silent execute 'Git checkout ' . a:1 . ' > /dev/null 2>&1' | redraw!
+endfunction
+command! -nargs=1 Gc call s:GitCheckout(<f-args>)
+
 " Markdown
 au BufRead,BufNewFile,BufWrite {*.markdown,*.md,*.mdk} set ft=markdown
 au BufRead,BufNewFile,BufWrite {*.textile} set ft=textile
 
 " Property lists
 au BufRead,BufNewFile,BufWrite {*.plist} set ft=xml
+
+" Syntastic mods
+let g:syntastic_coffee_coffeelint_args = "--csv --file ~/.coffeelintrc"
 
 " Use ruby syntax for additional ruby types
 au BufRead,BufNewFile,BufWrite {Capfile,Gemfile,Rakefile,Thorfile,config.ru,.caprc,.irbrc,irb_tempfile*} set ft=ruby
@@ -206,9 +230,3 @@ if has("win32")
     source $VIMRUNTIME/mswin.vim
     set guifont=Consolas:h13:cANSI,Anonymous\ Pro:h13:cANSI
 endif
-
-" Git shortcuts
-function! s:GitCheckout(...)
-  :silent execute 'Git checkout ' . a:1 . ' > /dev/null 2>&1' | redraw!
-endfunction
-command! -nargs=1 Gc call s:GitCheckout(<f-args>)
