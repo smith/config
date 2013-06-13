@@ -4,11 +4,12 @@
 [github]
 	user = smith
 [alias]
-  st = status
-  di = diff
-  co = checkout
-  ci = commit
   br = branch
+  ci = commit
+  co = checkout
+  di = diff
+  lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+  st = status
   sta = stash
 [branch]
   autosetupmerge = true
