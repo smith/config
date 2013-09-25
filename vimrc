@@ -11,6 +11,7 @@ call vundle#rc()
 
 Bundle 'airblade/vim-gitgutter'
 Bundle 'digitaltoad/vim-jade'
+Bundle 'elzr/vim-json'
 Bundle 'gmarik/vundle'
 Bundle 'guns/vim-clojure-static'
 Bundle 'int3/vim-extradite'
@@ -20,6 +21,8 @@ Bundle 'mileszs/ack.vim'
 Bundle 'othree/html5.vim'
 Bundle 'pangloss/vim-javascript'
 Bundle 'plasticboy/vim-markdown'
+Bundle 'rizzatti/dash.vim'
+Bundle 'rizzatti/funcoo.vim'
 Bundle 'scrooloose/nerdcommenter'
 Bundle 'scrooloose/nerdtree'
 Bundle 'scrooloose/syntastic'
@@ -35,6 +38,7 @@ Bundle 'tpope/vim-surround'
 Bundle 'tpope/vim-tbone'
 Bundle 'vim-ruby/vim-ruby'
 
+Bundle 'Align'
 Bundle 'csv.vim'
 Bundle 'LargeFile'
 Bundle 'TaskList.vim'
@@ -53,6 +57,8 @@ set smartcase
 set spell
 set spelllang=en_us
 set showcmd
+set splitbelow
+set splitright
 set switchbuf=useopen
 set wildmenu
 set wildmode=list:longest
@@ -81,14 +87,39 @@ cmap w!! w !sudo tee % >/dev/null
 let mapleader=","
 let g:mapleader=","
 
+nnoremap <C-J> <C-W><C-J>
+nnoremap <C-K> <C-W><C-K>
+nnoremap <C-L> <C-W><C-L>
+nnoremap <C-H> <C-W><C-H>
+
+" :Ack with ,a
+map <leader>a :Ack 
+
+" :Align = with ,=, :Align and sort with ,+
+map <leader>= :Align =<CR>
+
+" CoffeeCompile
+vmap <leader>s <esc>:'<,'>:CoffeeCompile<CR>
+map <leader>s :CoffeeCompile<CR>
+" Given :C NN, compile the coffeescript and go to the line in the JS
+command -nargs=1 C CoffeeCompile | :<args>
+
+" Dash
+nmap <silent> <leader>h <Plug>DashSearch
+nmap <silent> <leader>H <Plug>DashGlobalSearch
+
 " <CTRL-P> for ctrlp.vim
 let g:ctrlp_map = '<C-P>'
+let g:ctrlp_cmd = 'CtrlPMRUFiles'
 
 " Resize window to 80 width with ,8
 map <leader>8 :vertical resize 80<CR>
 
 " ,d for dispatch
 map <leader>d :Dispatch<CR>
+
+" ,f to find in nerdtree
+map <leader>f :NERDTreeFind<CR>
 
 "remap shift tab to be omni-complete
 inoremap <S-TAB> <C-X><C-O>
@@ -146,6 +177,12 @@ function! Indent4Spaces()
   set shiftwidth=4
 endfunction
 
+function! Indent2Spaces()
+  set tabstop=2
+  set softtabstop=2
+  set shiftwidth=2
+endfunction
+
 " CSS-type things
 au BufRead,BufNewFile,BufWrite {*.less} set ft=css
 
@@ -154,6 +191,8 @@ function! s:GitCheckout(...)
   :silent execute 'Git checkout ' . a:1 . ' > /dev/null 2>&1' | redraw!
 endfunction
 command! -nargs=1 Gc call s:GitCheckout(<f-args>)
+" http://robots.thoughtbot.com/post/48933156625/5-useful-tips-for-a-better-commit-message
+au Filetype gitcommit setlocal spell textwidth=72
 
 " Markdown
 au BufRead,BufNewFile,BufWrite {*.markdown,*.md,*.mdk} set ft=markdown
@@ -167,9 +206,6 @@ let g:syntastic_coffee_coffeelint_args = "--csv --file ~/.coffeelintrc"
 
 " Use ruby syntax for additional ruby types
 au BufRead,BufNewFile,BufWrite {Capfile,Gemfile,Rakefile,Thorfile,config.ru,.caprc,.irbrc,irb_tempfile*} set ft=ruby
-
-" JavaScript
-au BufRead,BufNewFile,BufWrite {*.js.asp,*.json} set ft=javascript
 
 " Indent-based folding
 au BufRead,BufNewFile,BufWrite {*.json,,*.py,*.coffee,*.yaml,*.yml} set foldmethod=indent
@@ -194,12 +230,18 @@ au BufRead,BufNewFile,BufWrite {*.clj,*.cljs} set nospell
 let g:vimclojure#HighlightBuiltins=1      " Highlight Clojure's builtins
 let g:vimclojure#ParenRainbow=1           " Rainbow parentheses'!
 
+" Make gf work for Common JS and AMD modules
+au FileType javascript setlocal suffixesadd=.coffee,.js,.jade
+au FileType coffee setlocal suffixesadd=.coffee ",.js,.jade
+
 " FIXME: When js in rails projects is being edited, it uses 2 spaces. Figure
 "        out how to not have rails.vim override this
-au FileType javascript call Indent4Spaces()
+au FileType javascript call Indent2Spaces()
 au FileType javascript call JavaScriptFold()
 au FileType javascript setl fen
 au FileType javascript setl foldlevel=99
+au FileType json setlocal equalprg=python\ -m\ json.tool
+let g:vim_json_syntax_conceal = 0
 
 " PHP
 let php_folding=1
