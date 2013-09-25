@@ -1,7 +1,0 @@
-#!/bin/sh
-security find-generic-password -ga "VPN Password" 2>&1 >/dev/null | \
-  grep ^password | \
-  awk -F\" '{print $2}' | \
-  tr -d '\n' | \
-  pbcopy
-open ~/Applications/Cisco/Cisco\ AnyConnect\ VPN\ Client.app/
