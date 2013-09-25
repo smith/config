@@ -11,6 +11,7 @@
   lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
   st = status
   sta = stash
+  standup = log --since yesterday --author='Nathan L Smith' --pretty=oneline --branches=* --decorate
 [branch]
   autosetupmerge = true
   autosetuprebase = always
