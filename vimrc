@@ -17,6 +17,7 @@ Bundle 'guns/vim-clojure-static'
 Bundle 'int3/vim-extradite'
 Bundle 'kchmck/vim-coffee-script'
 Bundle 'kien/ctrlp.vim'
+Bundle 'majutsushi/tagbar'
 Bundle 'mileszs/ack.vim'
 Bundle 'othree/html5.vim'
 Bundle 'pangloss/vim-javascript'
@@ -92,8 +93,17 @@ nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
 
+" NERDTree toggle with ,`
+map <leader>` :NERDTreeToggle<CR>
+
+" TagBar with ,\
+map <leader>\ :TagbarToggle<CR>
+
+" Resize window to 80 width with ,8
+map <leader>8 :vertical resize 80<CR>
+
 " :Ack with ,a
-map <leader>a :Ack 
+map <leader>a :Ack
 
 " :Align = with ,=, :Align and sort with ,+
 map <leader>= :Align =<CR>
@@ -104,6 +114,12 @@ map <leader>s :CoffeeCompile<CR>
 " Given :C NN, compile the coffeescript and go to the line in the JS
 command -nargs=1 C CoffeeCompile | :<args>
 
+" ,d for dispatch
+map <leader>d :Dispatch<CR>
+
+" ,f to find in nerdtree
+map <leader>f :NERDTreeFind<CR>
+
 " Dash
 nmap <silent> <leader>h <Plug>DashSearch
 nmap <silent> <leader>H <Plug>DashGlobalSearch
@@ -112,22 +128,13 @@ nmap <silent> <leader>H <Plug>DashGlobalSearch
 let g:ctrlp_map = '<C-P>'
 let g:ctrlp_cmd = 'CtrlPMRUFiles'
 
-" Resize window to 80 width with ,8
-map <leader>8 :vertical resize 80<CR>
-
-" ,d for dispatch
-map <leader>d :Dispatch<CR>
-
-" ,f to find in nerdtree
-map <leader>f :NERDTreeFind<CR>
-
-"remap shift tab to be omni-complete
-inoremap <S-TAB> <C-X><C-O>
-
 " Inserts the path of the currently edited file into a command
 " Command mode: Ctrl+P
 " (stolen from Janus)
 cmap <C-P> <C-R>=expand("%:p:h") . "/" <CR>
+
+" remap shift tab to be omni-complete
+inoremap <S-TAB> <C-X><C-O>
 
 " GUI options
 if has("gui_running")
@@ -240,7 +247,7 @@ au FileType javascript call Indent2Spaces()
 au FileType javascript call JavaScriptFold()
 au FileType javascript setl fen
 au FileType javascript setl foldlevel=99
-au FileType json setlocal equalprg=python\ -m\ json.tool
+au FileType json setlocal equalprg=jsonlint
 let g:vim_json_syntax_conceal = 0
 
 " PHP
@@ -271,4 +278,20 @@ if has("win32")
     " Use CUA keystrokes for clipboard: CTRL-X, CTRL-C, CTRL-V and CTRL-z
     source $VIMRUNTIME/mswin.vim
     set guifont=Consolas:h13:cANSI,Anonymous\ Pro:h13:cANSI
+endif
+
+if executable('coffeetags')
+  let g:tagbar_type_coffee = {
+        \ 'ctagsbin' : 'coffeetags',
+        \ 'ctagsargs' : '--include-vars',
+        \ 'kinds' : [
+        \ 'f:functions',
+        \ 'o:object',
+        \ ],
+        \ 'sro' : ".",
+        \ 'kind2scope' : {
+        \ 'f' : 'object',
+        \ 'o' : 'object',
+        \ }
+        \ }
 endif
