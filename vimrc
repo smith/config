@@ -44,6 +44,7 @@ Bundle 'csv.vim'
 Bundle 'LargeFile'
 Bundle 'TaskList.vim'
 Bundle 'TwitVim'
+Bundle 'ZoomWin'
 
 filetype plugin indent on
 
@@ -135,6 +136,9 @@ cmap <C-P> <C-R>=expand("%:p:h") . "/" <CR>
 
 " remap shift tab to be omni-complete
 inoremap <S-TAB> <C-X><C-O>
+
+" use <C-W><C-Z> for zoomwin
+nmap <C-W>Z  <Plug>ZoomWin
 
 " GUI options
 if has("gui_running")
