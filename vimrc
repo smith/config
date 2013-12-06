@@ -3,6 +3,7 @@
 
 syntax on
 set nocompatible
+set shell=/bin/bash
 
 " Vundle
 filetype off
@@ -10,6 +11,7 @@ set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
 
 Bundle 'airblade/vim-gitgutter'
+Bundle 'dag/vim-fish'
 Bundle 'digitaltoad/vim-jade'
 Bundle 'elzr/vim-json'
 Bundle 'gmarik/vundle'
@@ -27,6 +29,7 @@ Bundle 'rizzatti/funcoo.vim'
 Bundle 'scrooloose/nerdcommenter'
 Bundle 'scrooloose/nerdtree'
 Bundle 'scrooloose/syntastic'
+Bundle 'SirVer/ultisnips'
 Bundle 'tpope/vim-classpath'
 Bundle 'tpope/vim-dispatch'
 Bundle 'tpope/vim-endwise'
@@ -38,6 +41,8 @@ Bundle 'tpope/vim-rails'
 Bundle 'tpope/vim-surround'
 Bundle 'tpope/vim-tbone'
 Bundle 'vim-ruby/vim-ruby'
+" This must be loaded after vim-ruby
+Bundle 'file:///Users/nathansmith/Projects/vim-chef'
 
 Bundle 'Align'
 Bundle 'csv.vim'
@@ -138,7 +143,7 @@ cmap <C-P> <C-R>=expand("%:p:h") . "/" <CR>
 inoremap <S-TAB> <C-X><C-O>
 
 " use <C-W><C-Z> for zoomwin
-nmap <C-W>Z  <Plug>ZoomWin
+nmap <C-W>z  <Plug>ZoomWin
 
 " GUI options
 if has("gui_running")
