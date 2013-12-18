@@ -211,6 +211,7 @@ au Filetype gitcommit setlocal spell textwidth=72
 
 " Markdown
 au BufRead,BufNewFile,BufWrite {*.markdown,*.md,*.mdk} set ft=markdown
+au FileType markdown set makeprg=ghpreview\ %
 au BufRead,BufNewFile,BufWrite {*.textile} set ft=textile
 
 " Property lists
