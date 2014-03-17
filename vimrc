@@ -14,6 +14,7 @@ Bundle 'airblade/vim-gitgutter'
 Bundle 'dag/vim-fish'
 Bundle 'digitaltoad/vim-jade'
 Bundle 'elzr/vim-json'
+Bundle 'gcmt/wildfire.vim'
 Bundle 'gmarik/vundle'
 Bundle 'guns/vim-clojure-static'
 Bundle 'int3/vim-extradite'
@@ -35,6 +36,7 @@ Bundle 'tpope/vim-endwise'
 Bundle 'tpope/vim-fireplace'
 Bundle 'tpope/vim-fugitive'
 Bundle 'tpope/vim-git'
+Bundle 'tpope/vim-haml'
 Bundle 'tpope/vim-ragtag'
 Bundle 'tpope/vim-rails'
 Bundle 'tpope/vim-surround'
@@ -57,6 +59,8 @@ set autoread
 set hidden
 set incsearch
 set ignorecase
+set lazyredraw
+set mouse=a
 set nobackup
 set noswapfile
 set smartcase
@@ -198,6 +202,9 @@ function! Indent2Spaces()
   set shiftwidth=2
 endfunction
 
+" bats!
+au BufRead,BufNewFile,BufWrite {*.bats} set ft=sh
+
 " CSS-type things
 au BufRead,BufNewFile,BufWrite {*.less} set ft=css
 
@@ -222,6 +229,7 @@ let g:syntastic_coffee_coffeelint_args = "--csv --file ~/.coffeelintrc"
 
 " Use ruby syntax for additional ruby types
 au BufRead,BufNewFile,BufWrite {Capfile,Gemfile,Rakefile,Thorfile,config.ru,.caprc,.irbrc,irb_tempfile*} set ft=ruby
+let g:syntastic_ruby_checkers = ['mri', 'rubocop']
 
 " Indent-based folding
 au BufRead,BufNewFile,BufWrite {*.json,,*.py,*.coffee,*.yaml,*.yml} set foldmethod=indent
