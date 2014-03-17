@@ -1,10 +1,12 @@
 .*.sw*
 .DS_Store
 doc/tags*
-dump.rdb
+.envrc
 .idea
+.ruby-version
+.tags
+Thumbs.db
+dump.rdb
 mkmf.log
 npm-debug.log
-Thumbs.db
-.tags
 tags
