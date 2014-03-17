@@ -3,7 +3,7 @@
 set -gx EDITOR vim
 
 # Paths
-set -gx PATH $HOME/bin $PWD/node_modules/.bin $HOME/.rbenv/bin \
+set -gx PATH /opt/chefdk/bin $HOME/bin $PWD/node_modules/.bin $HOME/.rbenv/bin \
              $HOME/.rbenv/shims /usr/local/share/npm/bin \
              /usr/local/share/python \
              $PATH
