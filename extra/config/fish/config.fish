@@ -53,3 +53,9 @@ set __fish_git_prompt_showcolorhints
 set __fish_git_prompt_char_dirtystate '*'
 
 function fish_right_prompt; __fish_git_prompt; end
+
+# Use multiple SSH configs
+function ssh
+  cat ~/.ssh/config.d/* > ~/.ssh/config
+  command ssh $argv
+end
