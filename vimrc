@@ -11,12 +11,14 @@ set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
 
 Bundle 'airblade/vim-gitgutter'
+Bundle 'AndrewRadev/splitjoin.vim'
 Bundle 'dag/vim-fish'
 Bundle 'digitaltoad/vim-jade'
 Bundle 'elzr/vim-json'
 Bundle 'gcmt/wildfire.vim'
 Bundle 'gmarik/vundle'
 Bundle 'guns/vim-clojure-static'
+Bundle 'idanarye/vim-merginal'
 Bundle 'int3/vim-extradite'
 Bundle 'kchmck/vim-coffee-script'
 Bundle 'kien/ctrlp.vim'
@@ -42,6 +44,7 @@ Bundle 'tpope/vim-rails'
 Bundle 'tpope/vim-surround'
 Bundle 'tpope/vim-tbone'
 Bundle 'vim-ruby/vim-ruby'
+Bundle 'wellle/tmux-complete.vim'
 " This must be loaded after vim-ruby
 Bundle 'file:///Users/nathansmith/Projects/vim-chef'
 
@@ -121,7 +124,7 @@ map <leader>= :Align =<CR>
 vmap <leader>s <esc>:'<,'>:CoffeeCompile<CR>
 map <leader>s :CoffeeCompile<CR>
 " Given :C NN, compile the coffeescript and go to the line in the JS
-command -nargs=1 C CoffeeCompile | :<args>
+command! -nargs=1 C CoffeeCompile | :<args>
 
 " ,d for dispatch
 map <leader>d :Dispatch<CR>
@@ -218,7 +221,7 @@ au Filetype gitcommit setlocal spell textwidth=72
 
 " Markdown
 au BufRead,BufNewFile,BufWrite {*.markdown,*.md,*.mdk} set ft=markdown
-au FileType markdown set makeprg=ghpreview\ %
+au FileType markdown setlocal makeprg=ghpreview\ %
 au BufRead,BufNewFile,BufWrite {*.textile} set ft=textile
 
 " Property lists
@@ -262,6 +265,7 @@ au FileType coffee setlocal suffixesadd=.coffee ",.js,.jade
 "        out how to not have rails.vim override this
 au FileType javascript call Indent2Spaces()
 au FileType javascript call JavaScriptFold()
+au FileType coffee,javascript setlocal makeprg=npm\ test
 au FileType javascript setl fen
 au FileType javascript setl foldlevel=99
 au FileType json setlocal equalprg=jsonlint
@@ -331,6 +335,6 @@ endif
 nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
 
 " bind \ (backward slash) to grep shortcut
-command -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
+command! -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
 
 nnoremap \ :Ag<SPACE>
