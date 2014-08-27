@@ -30,9 +30,15 @@
     "strict": false,
     "white": false,
     "globals": {
+        "angular": true,
+        "beforeEach": true,
         "define": true,
-        "require": true
         "describe": true,
-        "it": true
+        "expect": true,
+        "inject": true,
+        "iit": true,
+        "it": true,
+        "module": true,
+        "require": true
     }
 }
