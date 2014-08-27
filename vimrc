@@ -15,6 +15,7 @@ Bundle 'AndrewRadev/splitjoin.vim'
 Bundle 'dag/vim-fish'
 Bundle 'digitaltoad/vim-jade'
 Bundle 'elzr/vim-json'
+Bundle 'gabebw/vim-spec-runner'
 Bundle 'gcmt/wildfire.vim'
 Bundle 'gmarik/vundle'
 Bundle 'guns/vim-clojure-static'
@@ -24,6 +25,7 @@ Bundle 'kchmck/vim-coffee-script'
 Bundle 'kien/ctrlp.vim'
 Bundle 'majutsushi/tagbar'
 Bundle 'othree/html5.vim'
+Bundle 'othree/javascript-libraries-syntax.vim'
 Bundle 'pangloss/vim-javascript'
 Bundle 'plasticboy/vim-markdown'
 Bundle 'rizzatti/dash.vim'
@@ -32,6 +34,7 @@ Bundle 'scrooloose/nerdcommenter'
 Bundle 'scrooloose/nerdtree'
 Bundle 'scrooloose/syntastic'
 Bundle 'SirVer/ultisnips'
+Bundle 'thoughtbot/vim-rspec'
 Bundle 'tpope/vim-classpath'
 Bundle 'tpope/vim-dispatch'
 Bundle 'tpope/vim-endwise'
@@ -41,6 +44,7 @@ Bundle 'tpope/vim-git'
 Bundle 'tpope/vim-haml'
 Bundle 'tpope/vim-ragtag'
 Bundle 'tpope/vim-rails'
+Bundle 'tpope/vim-rake'
 Bundle 'tpope/vim-surround'
 Bundle 'tpope/vim-tbone'
 Bundle 'vim-ruby/vim-ruby'
@@ -127,7 +131,8 @@ map <leader>s :CoffeeCompile<CR>
 command! -nargs=1 C CoffeeCompile | :<args>
 
 " ,d for dispatch
-map <leader>d :Dispatch<CR>
+"map <leader>d :Dispatch<CR>
+map <Leader>d <Plug>RunCurrentSpecFile
 
 " ,f to find in nerdtree
 map <leader>f :NERDTreeFind<CR>
@@ -233,6 +238,9 @@ let g:syntastic_coffee_coffeelint_args = "--csv --file ~/.coffeelintrc"
 " Use ruby syntax for additional ruby types
 au BufRead,BufNewFile,BufWrite {Capfile,Gemfile,Rakefile,Thorfile,config.ru,.caprc,.irbrc,irb_tempfile*} set ft=ruby
 let g:syntastic_ruby_checkers = ['mri', 'rubocop']
+
+" For vim-spec-runner/dispatch
+let g:spec_runner_dispatcher = 'Dispatch {command}'
 
 " Indent-based folding
 au BufRead,BufNewFile,BufWrite {*.json,,*.py,*.coffee,*.yaml,*.yml} set foldmethod=indent
