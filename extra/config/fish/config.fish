@@ -39,6 +39,9 @@ eval (direnv hook fish)
 # lisp
 if which clj > /dev/null; function lisp; rlwrap clj; end; end
 
+# lolcat
+if which lolcat > /dev/null; function cat; lolcat $argv; end; end
+
 # hub
 if which hub > /dev/null; function git; hub $argv; end; end
 
