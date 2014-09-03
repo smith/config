@@ -39,6 +39,7 @@
         "iit": true,
         "it": true,
         "module": true,
-        "require": true
+        "require": true,
+        "xit": true
     }
 }
