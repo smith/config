@@ -12,6 +12,7 @@ call vundle#rc()
 
 Bundle 'airblade/vim-gitgutter'
 Bundle 'AndrewRadev/splitjoin.vim'
+Bundle 'burnettk/vim-angular'
 Bundle 'dag/vim-fish'
 Bundle 'digitaltoad/vim-jade'
 Bundle 'elzr/vim-json'
