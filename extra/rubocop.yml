@@ -20,6 +20,8 @@ LineLength:
   Enabled: false
 MethodLength:
   Enabled: false
+NumericLiterals:
+  Enabled: false
 SignalException:
   Enabled: false
 StringLiterals:
