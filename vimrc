@@ -16,26 +16,32 @@ Bundle 'burnettk/vim-angular'
 Bundle 'dag/vim-fish'
 Bundle 'digitaltoad/vim-jade'
 Bundle 'elzr/vim-json'
-Bundle 'gabebw/vim-spec-runner'
+Bundle 'gabesoft/vim-ags'
 Bundle 'gcmt/wildfire.vim'
 Bundle 'gmarik/vundle'
 Bundle 'guns/vim-clojure-static'
+Bundle 'guns/vim-sexp'
 Bundle 'idanarye/vim-merginal'
 Bundle 'int3/vim-extradite'
+Bundle 'jpalardy/vim-slime'
 Bundle 'kchmck/vim-coffee-script'
 Bundle 'kien/ctrlp.vim'
+Bundle 'kien/rainbow_parentheses.vim'
+Bundle 'low-ghost/nerdtree-fugitive'
 Bundle 'majutsushi/tagbar'
+Bundle 'osyo-manga/vim-monster'
 Bundle 'othree/html5.vim'
 Bundle 'othree/javascript-libraries-syntax.vim'
 Bundle 'pangloss/vim-javascript'
 Bundle 'plasticboy/vim-markdown'
+Bundle 'rhysd/committia.vim'
 Bundle 'rizzatti/dash.vim'
 Bundle 'rizzatti/funcoo.vim'
 Bundle 'scrooloose/nerdcommenter'
 Bundle 'scrooloose/nerdtree'
 Bundle 'scrooloose/syntastic'
-Bundle 'SirVer/ultisnips'
-Bundle 'thoughtbot/vim-rspec'
+"Bundle 'SirVer/ultisnips'
+Bundle 'suan/vim-instant-markdown'
 Bundle 'tpope/vim-classpath'
 Bundle 'tpope/vim-dispatch'
 Bundle 'tpope/vim-endwise'
@@ -43,6 +49,7 @@ Bundle 'tpope/vim-fireplace'
 Bundle 'tpope/vim-fugitive'
 Bundle 'tpope/vim-git'
 Bundle 'tpope/vim-haml'
+Bundle 'tpope/vim-leiningen'
 Bundle 'tpope/vim-ragtag'
 Bundle 'tpope/vim-rails'
 Bundle 'tpope/vim-rake'
@@ -50,6 +57,7 @@ Bundle 'tpope/vim-surround'
 Bundle 'tpope/vim-tbone'
 Bundle 'vim-ruby/vim-ruby'
 Bundle 'wellle/tmux-complete.vim'
+Bundle 'Xuyuanp/nerdtree-git-plugin'
 " This must be loaded after vim-ruby
 Bundle 'file:///Users/nathansmith/Projects/vim-chef'
 
@@ -110,17 +118,8 @@ nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
 
-" NERDTree toggle with ,`
-map <leader>` :NERDTreeToggle<CR>
-
-" TagBar with ,\
-map <leader>\ :TagbarToggle<CR>
-
 " Resize window to 80 width with ,8
 map <leader>8 :vertical resize 80<CR>
-
-" :Ack with ,a
-map <leader>a :Ack
 
 " :Align = with ,=, :Align and sort with ,+
 map <leader>= :Align =<CR>
@@ -132,30 +131,36 @@ map <leader>s :CoffeeCompile<CR>
 command! -nargs=1 C CoffeeCompile | :<args>
 
 " ,d for dispatch
-"map <leader>d :Dispatch<CR>
-map <Leader>d <Plug>RunCurrentSpecFile
-
-" ,f to find in nerdtree
-map <leader>f :NERDTreeFind<CR>
+map <leader>d :Dispatch<CR>
 
 " Dash
 nmap <silent> <leader>h <Plug>DashSearch
 nmap <silent> <leader>H <Plug>DashGlobalSearch
 
+" ,f to find in nerdtree
+map <leader>f :NERDTreeFind<CR>
+
+" NERDTree toggle with ,`
+map <leader>` :NERDTreeToggle<CR>
+
+" ,n to insert the time, 'n'ow
+map <leader>n "=strftime("%FT%T%z")<CR>Pa<SPACE>
+
 " <CTRL-P> for ctrlp.vim
 let g:ctrlp_map = '<C-P>'
 let g:ctrlp_cmd = 'CtrlPMRUFiles'
 
-" Inserts the path of the currently edited file into a command
-" Command mode: Ctrl+P
-" (stolen from Janus)
-cmap <C-P> <C-R>=expand("%:p:h") . "/" <CR>
-
 " remap shift tab to be omni-complete
 inoremap <S-TAB> <C-X><C-O>
 
+" TagBar with ,\
+map <leader>\ :TagbarToggle<CR>
+
 " use <C-W><C-Z> for zoomwin
 nmap <C-W>z  <Plug>ZoomWin
+
+" Slime
+let g:slime_target = "tmux"
 
 " GUI options
 if has("gui_running")
@@ -196,8 +201,9 @@ au BufWrite * match ExtraWhitespace /\s\+$\| \+\ze\t/
 highlight clear SpellBad
 highlight SpellBad cterm=underline ctermfg=red
 
-" Use ag for :Ack
-let g:ackprg = 'ag --nogroup --nocolor --column'
+" Fix highlighting on Ags search results
+" See https://github.com/gabesoft/vim-ags/issues/9
+autocmd BufWinEnter {*.agsv} syntax on
 
 function! Indent4Spaces()
   set tabstop=4
@@ -240,9 +246,6 @@ let g:syntastic_coffee_coffeelint_args = "--csv --file ~/.coffeelintrc"
 au BufRead,BufNewFile,BufWrite {Capfile,Gemfile,Rakefile,Thorfile,config.ru,.caprc,.irbrc,irb_tempfile*} set ft=ruby
 let g:syntastic_ruby_checkers = ['mri', 'rubocop']
 
-" For vim-spec-runner/dispatch
-let g:spec_runner_dispatcher = 'Dispatch {command}'
-
 " Indent-based folding
 au BufRead,BufNewFile,BufWrite {*.json,,*.py,*.coffee,*.yaml,*.yml} set foldmethod=indent
 
@@ -264,7 +267,12 @@ au BufRead,BufNewFile,BufWrite {*.scm,*.scheme} set ft=lisp
 au BufRead,BufNewFile,BufWrite {*.cljs} set ft=clojure
 au BufRead,BufNewFile,BufWrite {*.clj,*.cljs} set nospell
 let g:vimclojure#HighlightBuiltins=1      " Highlight Clojure's builtins
-let g:vimclojure#ParenRainbow=1           " Rainbow parentheses'!
+
+" Rainbow parens
+au VimEnter * RainbowParenthesesToggle
+au Syntax * RainbowParenthesesLoadRound
+au Syntax * RainbowParenthesesLoadSquare
+au Syntax * RainbowParenthesesLoadBraces
 
 " Make gf work for Common JS and AMD modules
 au FileType javascript setlocal suffixesadd=.coffee,.js,.jade
@@ -277,6 +285,7 @@ au FileType javascript call JavaScriptFold()
 au FileType coffee,javascript setlocal makeprg=npm\ test
 au FileType javascript setl fen
 au FileType javascript setl foldlevel=99
+
 au FileType json setlocal equalprg=jsonlint
 let g:vim_json_syntax_conceal = 0
 
@@ -340,10 +349,4 @@ if executable('ag')
   let g:ctrlp_use_caching = 0
 endif
 
-" bind K to grep word under cursor
-nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
-
-" bind \ (backward slash) to grep shortcut
-command! -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
-
-nnoremap \ :Ag<SPACE>
+nnoremap \ :Ags<SPACE>

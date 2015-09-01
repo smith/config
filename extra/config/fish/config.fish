@@ -5,7 +5,6 @@ set -gx EDITOR vim
 # Paths
 set -gx PATH /opt/chefdk/bin $HOME/bin $PWD/node_modules/.bin $HOME/.rbenv/bin \
              $HOME/.rbenv/shims /usr/local/share/npm/bin \
-             /usr/local/share/python \
              $PATH
 set -gx NODE_PATH $PWD/node_modules $HOME/.node_modules \
                   /usr/local/share/npm/lib/node_modules \
@@ -13,6 +12,11 @@ set -gx NODE_PATH $PWD/node_modules $HOME/.node_modules \
 
 # rbenv
 set -gx RBENV_ROOT $HOME/.rbenv
+
+# lastpass aliases
+if which lpass > /dev/null
+  function adpw; command lpass show --clip --password "Chef AD"; end
+end
 
 # ls/open aliases; set ls colors
 if [ (uname) = "Darwin" ]
@@ -29,6 +33,9 @@ if which mvim > /dev/null
     function vi; mvim -v $argv; end
     function vim; vi $argv; end
 end
+
+# ChefDK
+eval (chef shell-init SHELL_NAME)
 
 # Use dfc if available
 if which dfc > /dev/null; function df; dfc; end; end
@@ -62,3 +69,5 @@ function ssh
   cat ~/.ssh/config.d/* > ~/.ssh/config
   command ssh $argv
 end
+
+test -s /Users/nathansmith/.nvm-fish/nvm.fish; and source /Users/nathansmith/.nvm-fish/nvm.fish
