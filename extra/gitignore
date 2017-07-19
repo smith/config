@@ -1,4 +1,5 @@
 .*.sw*
+/.chef
 .DS_Store
 doc/tags*
 .envrc
@@ -6,6 +7,7 @@ doc/tags*
 .idea
 .ruby-version
 .tags
+.vscode
 Thumbs.db
 dump.rdb
 mkmf.log

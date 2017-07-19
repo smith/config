@@ -13,35 +13,47 @@ call vundle#rc()
 Bundle 'airblade/vim-gitgutter'
 Bundle 'AndrewRadev/splitjoin.vim'
 Bundle 'burnettk/vim-angular'
+Bundle 'cespare/vim-toml'
+Bundle 'Chiel92/vim-autoformat'
 Bundle 'dag/vim-fish'
 Bundle 'digitaltoad/vim-jade'
+Bundle 'editorconfig/editorconfig-vim'
 Bundle 'elzr/vim-json'
-Bundle 'gabesoft/vim-ags'
 Bundle 'gcmt/wildfire.vim'
 Bundle 'gmarik/vundle'
 Bundle 'guns/vim-clojure-static'
 Bundle 'guns/vim-sexp'
+Bundle 'hashivim/vim-terraform'
+Bundle 'HerringtonDarkholme/vim-worksheet'
 Bundle 'idanarye/vim-merginal'
 Bundle 'int3/vim-extradite'
 Bundle 'jpalardy/vim-slime'
 Bundle 'kchmck/vim-coffee-script'
 Bundle 'kien/ctrlp.vim'
 Bundle 'kien/rainbow_parentheses.vim'
+Bundle 'lambdatoast/elm.vim'
+Bundle 'leafgarland/typescript-vim'
 Bundle 'low-ghost/nerdtree-fugitive'
 Bundle 'majutsushi/tagbar'
+Bundle 'mustache/vim-mustache-handlebars'
 Bundle 'osyo-manga/vim-monster'
 Bundle 'othree/html5.vim'
 Bundle 'othree/javascript-libraries-syntax.vim'
 Bundle 'pangloss/vim-javascript'
 Bundle 'plasticboy/vim-markdown'
+Bundle 'Quramy/tsuquyomi'
 Bundle 'rhysd/committia.vim'
 Bundle 'rizzatti/dash.vim'
 Bundle 'rizzatti/funcoo.vim'
+Bundle 'roalddevries/yaml.vim'
+Bundle 'rust-lang/rust.vim'
 Bundle 'scrooloose/nerdcommenter'
 Bundle 'scrooloose/nerdtree'
 Bundle 'scrooloose/syntastic'
+Bundle 'Shougo/unite.vim'
+Bundle 'Shougo/vimproc.vim'
 "Bundle 'SirVer/ultisnips'
-Bundle 'suan/vim-instant-markdown'
+Bundle 'slim-template/vim-slim'
 Bundle 'tpope/vim-classpath'
 Bundle 'tpope/vim-dispatch'
 Bundle 'tpope/vim-endwise'
@@ -56,6 +68,7 @@ Bundle 'tpope/vim-rake'
 Bundle 'tpope/vim-surround'
 Bundle 'tpope/vim-tbone'
 Bundle 'vim-ruby/vim-ruby'
+Bundle 'wakatime/vim-wakatime'
 Bundle 'wellle/tmux-complete.vim'
 Bundle 'Xuyuanp/nerdtree-git-plugin'
 " This must be loaded after vim-ruby
@@ -72,6 +85,7 @@ filetype plugin indent on
 
 " General options
 set autoread
+set clipboard=unnamed
 set hidden
 set incsearch
 set ignorecase
@@ -106,6 +120,14 @@ set shiftwidth=2
 set softtabstop=2
 set tabstop=2
 
+" preserve selection after indentation
+vmap > >gv
+vmap < <gv
+
+" Map tab to indent in visual mode
+vmap <Tab> >gv
+vmap <S-Tab> <gv
+
 " Use :w!! to save with sudo if you're editing a readonly file
 cmap w!! w !sudo tee % >/dev/null
 
@@ -118,33 +140,10 @@ nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
 
-" Resize window to 80 width with ,8
-map <leader>8 :vertical resize 80<CR>
-
-" :Align = with ,=, :Align and sort with ,+
-map <leader>= :Align =<CR>
-
-" CoffeeCompile
-vmap <leader>s <esc>:'<,'>:CoffeeCompile<CR>
-map <leader>s :CoffeeCompile<CR>
+" CoffeeScript
+"
 " Given :C NN, compile the coffeescript and go to the line in the JS
 command! -nargs=1 C CoffeeCompile | :<args>
-
-" ,d for dispatch
-map <leader>d :Dispatch<CR>
-
-" Dash
-nmap <silent> <leader>h <Plug>DashSearch
-nmap <silent> <leader>H <Plug>DashGlobalSearch
-
-" ,f to find in nerdtree
-map <leader>f :NERDTreeFind<CR>
-
-" NERDTree toggle with ,`
-map <leader>` :NERDTreeToggle<CR>
-
-" ,n to insert the time, 'n'ow
-map <leader>n "=strftime("%FT%T%z")<CR>Pa<SPACE>
 
 " <CTRL-P> for ctrlp.vim
 let g:ctrlp_map = '<C-P>'
@@ -152,9 +151,6 @@ let g:ctrlp_cmd = 'CtrlPMRUFiles'
 
 " remap shift tab to be omni-complete
 inoremap <S-TAB> <C-X><C-O>
-
-" TagBar with ,\
-map <leader>\ :TagbarToggle<CR>
 
 " use <C-W><C-Z> for zoomwin
 nmap <C-W>z  <Plug>ZoomWin
@@ -194,34 +190,40 @@ highlight FoldColumn ctermfg=Yellow ctermbg=NONE
 " Highlight trailing whitespace
 highlight ExtraWhitespace guibg=DarkCyan ctermbg=Blue
 au ColorScheme * highlight ExtraWhitespace guibg=DarkCyan ctermbg=Blue
-au BufWinEnter * match ExtraWhitespace /\s\+$\| \+\ze\t/
-au BufWrite * match ExtraWhitespace /\s\+$\| \+\ze\t/
+au BufWinEnter * match ExtraWhitespace /\s\+$\|\t\+/
+au BufWrite * match ExtraWhitespace /\s\+$\|\t\+/
 
 " Spelling highlights
 highlight clear SpellBad
 highlight SpellBad cterm=underline ctermfg=red
-
-" Fix highlighting on Ags search results
-" See https://github.com/gabesoft/vim-ags/issues/9
-autocmd BufWinEnter {*.agsv} syntax on
-
-function! Indent4Spaces()
-  set tabstop=4
-  set softtabstop=4
-  set shiftwidth=4
-endfunction
-
-function! Indent2Spaces()
-  set tabstop=2
-  set softtabstop=2
-  set shiftwidth=2
-endfunction
 
 " bats!
 au BufRead,BufNewFile,BufWrite {*.bats} set ft=sh
 
 " CSS-type things
 au BufRead,BufNewFile,BufWrite {*.less} set ft=css
+
+" CoffeeScript
+if executable('coffeetags')
+  let g:tagbar_type_coffee = {
+        \ 'ctagsbin' : 'coffeetags',
+        \ 'ctagsargs' : '--include-vars',
+        \ 'kinds' : [
+        \ 'f:functions',
+        \ 'o:object',
+        \ ],
+        \ 'sro' : ".",
+        \ 'kind2scope' : {
+        \ 'f' : 'object',
+        \ 'o' : 'object',
+        \ }
+        \ }
+endif
+
+" Erlang
+au Filetype erlang setlocal shiftwidth=4
+au Filetype erlang setlocal softtabstop=4
+au Filetype erlang setlocal tabstop=4
 
 " Git shortcuts
 function! s:GitCheckout(...)
@@ -230,6 +232,9 @@ endfunction
 command! -nargs=1 Gc call s:GitCheckout(<f-args>)
 " http://robots.thoughtbot.com/post/48933156625/5-useful-tips-for-a-better-commit-message
 au Filetype gitcommit setlocal spell textwidth=72
+
+" Handlebars/mustache
+let g:mustache_abbreviations = 1
 
 " Markdown
 au BufRead,BufNewFile,BufWrite {*.markdown,*.md,*.mdk} set ft=markdown
@@ -241,10 +246,12 @@ au BufRead,BufNewFile,BufWrite {*.plist} set ft=xml
 
 " Syntastic mods
 let g:syntastic_coffee_coffeelint_args = "--csv --file ~/.coffeelintrc"
+let g:syntastic_sh_shellcheck_args = "--shell=bash --exclude=SC1090,SC1091,SC2034,SC2039,SC2148,SC2153,SC2154"
 
 " Use ruby syntax for additional ruby types
 au BufRead,BufNewFile,BufWrite {Capfile,Gemfile,Rakefile,Thorfile,config.ru,.caprc,.irbrc,irb_tempfile*} set ft=ruby
 let g:syntastic_ruby_checkers = ['mri', 'rubocop']
+let g:syntastic_ruby_rubocop_exec = 'chef exec chefstyle'
 
 " Indent-based folding
 au BufRead,BufNewFile,BufWrite {*.json,,*.py,*.coffee,*.yaml,*.yml} set foldmethod=indent
@@ -268,11 +275,39 @@ au BufRead,BufNewFile,BufWrite {*.cljs} set ft=clojure
 au BufRead,BufNewFile,BufWrite {*.clj,*.cljs} set nospell
 let g:vimclojure#HighlightBuiltins=1      " Highlight Clojure's builtins
 
+" Markdown
+let g:formatdef_markdown = 'markdownfmt'
+let g:formatters_markdown = ['markdown']
+
 " Rainbow parens
 au VimEnter * RainbowParenthesesToggle
 au Syntax * RainbowParenthesesLoadRound
 au Syntax * RainbowParenthesesLoadSquare
 au Syntax * RainbowParenthesesLoadBraces
+
+let g:rbpt_colorpairs = [
+    \ ['brown',       'RoyalBlue3'],
+    \ ['Lightblue',   'SeaGreen3'],
+    \ ['darkgray',    'DarkOrchid3'],
+    \ ['darkgreen',   'firebrick3'],
+    \ ['darkcyan',    'RoyalBlue3'],
+    \ ['darkred',     'SeaGreen3'],
+    \ ['darkmagenta', 'DarkOrchid3'],
+    \ ['brown',       'firebrick3'],
+    \ ['gray',        'RoyalBlue3'],
+    \ ['Lightblue',   'SeaGreen3'],
+    \ ['darkmagenta', 'DarkOrchid3'],
+    \ ['Lightblue',   'firebrick3'],
+    \ ['darkgreen',   'RoyalBlue3'],
+    \ ['darkcyan',    'SeaGreen3'],
+    \ ['darkred',     'DarkOrchid3'],
+    \ ['red',         'firebrick3'],
+    \ ]
+
+" Rust
+let g:rustfmt_autosave = 0
+let g:formatdef_rustfmt = '"rustfmt"'
+let g:formatters_rust = ['rustfmt']
 
 " Make gf work for Common JS and AMD modules
 au FileType javascript setlocal suffixesadd=.coffee,.js,.jade
@@ -280,7 +315,6 @@ au FileType coffee setlocal suffixesadd=.coffee ",.js,.jade
 
 " FIXME: When js in rails projects is being edited, it uses 2 spaces. Figure
 "        out how to not have rails.vim override this
-au FileType javascript call Indent2Spaces()
 au FileType javascript call JavaScriptFold()
 au FileType coffee,javascript setlocal makeprg=npm\ test
 au FileType javascript setl fen
@@ -289,13 +323,25 @@ au FileType javascript setl foldlevel=99
 au FileType json setlocal equalprg=jsonlint
 let g:vim_json_syntax_conceal = 0
 
-" PHP
-let php_folding=1
-au FileType php call Indent4Spaces()
-au FileType php setl foldlevel=99
+" TypeScript
+let g:tagbar_type_typescript = {
+  \ 'ctagstype': 'typescript',
+  \ 'kinds': [
+    \ 'c:classes',
+    \ 'n:modules',
+    \ 'f:functions',
+    \ 'v:variables',
+    \ 'v:varlambdas',
+    \ 'm:members',
+    \ 'i:interfaces',
+    \ 'e:enums',
+  \ ]
+\ }
 
-" Python
-au FileType python call Indent4Spaces()
+let g:syntastic_typescript_checkers = ['tslint', 'tsc']
+" Invoking `tsc` with no arguments makes it so a tsconfig.json is read if it
+" is present.
+let g:syntastic_typescript_tsc_fname = ''
 
 " MacVim
 if has("gui_macvim")
@@ -319,34 +365,44 @@ if has("win32")
     set guifont=Consolas:h13:cANSI,Anonymous\ Pro:h13:cANSI
 endif
 
-if executable('coffeetags')
-  let g:tagbar_type_coffee = {
-        \ 'ctagsbin' : 'coffeetags',
-        \ 'ctagsargs' : '--include-vars',
-        \ 'kinds' : [
-        \ 'f:functions',
-        \ 'o:object',
-        \ ],
-        \ 'sro' : ".",
-        \ 'kind2scope' : {
-        \ 'f' : 'object',
-        \ 'o' : 'object',
-        \ }
-        \ }
-endif
-
 " See http://robots.thoughtbot.com/faster-grepping-in-vim/ for the below
 
 " The Silver Searcher
-if executable('ag')
-  " Use ag over grep
-  set grepprg=ag\ --nogroup\ --nocolor
+if executable('rg')
+  " Use rg over grep
+  set grepprg=rg\ --vimgrep\ --no-heading
+  set grepformat=%f:%l:%c:%m,%f:%l:%m
 
-  " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
-  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+  " Use rg in CtrlP for listing files. Lightning fast and respects .gitignore
+  let g:ctrlp_user_command = 'rg %s --files --color never ""'
 
-  " ag is fast enough that CtrlP doesn't need to cache
+  " rg is fast enough that CtrlP doesn't need to cache
   let g:ctrlp_use_caching = 0
 endif
 
-nnoremap \ :Ags<SPACE>
+" Leader mappings
+"
+" NERDTree toggle with ,`
+map <leader>` :NERDTreeToggle<CR>
+" :Align = with ,=, :Align and sort with ,+
+map <leader>= :Align =<CR>
+" TagBar with ,\
+map <leader>\ :TagbarToggle<CR>
+" Resize window to 80 width with ,8
+map <leader>8 :vertical resize 80<CR>
+" Autoformat
+nmap <Leader>a :Autoformat<CR>
+" ,d for dispatch
+map <leader>d :Dispatch<CR>
+" ,f to find in nerdtree
+map <leader>f :NERDTreeFind<CR>
+" Dash
+nmap <silent> <leader>h <Plug>DashSearch
+nmap <silent> <leader>H <Plug>DashGlobalSearch
+" ,n to insert the time, 'n'ow
+map <leader>n "=strftime("%FT%T%z")<CR>Pa<SPACE>
+" TypeScript
+autocmd FileType typescript nmap <buffer> <Leader>t : <C-u>echo tsuquyomi#hint()<CR>
+" CoffeeCompile
+vmap <leader>s <esc>:'<,'>:CoffeeCompile<CR>
+map <leader>s :CoffeeCompile<CR>

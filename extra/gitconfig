@@ -1,6 +1,7 @@
 [user]
-	email = smith@chef.io
+	email = smith@nlsmith.com
 	name = Nathan L Smith
+	signingkey = 04A6D643
 [github]
 	user = smith
 [alias]
@@ -40,3 +41,5 @@
 	clean = git media clean %f
 	smudge = git media smudge %f
 	required = true
+[commit]
+	gpgsign = false

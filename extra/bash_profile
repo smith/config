@@ -60,3 +60,9 @@ fi
 
 # chef configs
 [[ -f "$HOME/.chef-env" ]] && source "$HOME/.chef-env"
+
+# The next line updates PATH for the Google Cloud SDK.
+source '/Users/nathansmith/google-cloud-sdk/path.bash.inc'
+
+# The next line enables shell command completion for gcloud.
+source '/Users/nathansmith/google-cloud-sdk/completion.bash.inc'
