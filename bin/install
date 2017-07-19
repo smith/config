@@ -1,0 +1,29 @@
+#!/bin/bash
+
+set -euo pipefail
+
+get_script_dir () {
+  SOURCE="${BASH_SOURCE[0]}"
+  while [ -h "$SOURCE" ]; do
+    DIR="$(cd -P "$( dirname "$SOURCE" )" && pwd)"
+    SOURCE="$(readlink "$SOURCE")"
+    [[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE"
+  done
+  (cd -P "$(dirname "$SOURCE")" && pwd)
+}
+
+cd "$(get_script_dir)/.." || exit
+
+for dir in $(cd etc && find . ! -path . -type d -printf '%P\n'); do
+  mkdir -pv "$HOME/.$dir"
+done
+for path in $(cd etc && find . -type f -printf '%P\n'); do
+  ln -fsv "$(readlink -f "$(get_script_dir)/../etc/$path")" "$HOME/.$path"
+done
+
+mkdir -pv "$HOME/bin"
+for bin in $(cd bin && find . -executable -type f -printf '%P\n'); do
+  if [[ "$bin" != "install" ]]; then
+    ln -fsv "$(readlink -f "$(get_script_dir)/../bin/$bin")" "$HOME/bin/$bin"
+  fi
+done
