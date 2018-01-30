@@ -8,6 +8,11 @@ My configuration files. Includes config files for [Neovim](https://neovim.io),
 `./bin/install` will symlink the files into their respective locations in your
 home directory.
 
+## Bootstrap script
+
+[`./bin/bootstrap`](bin/bootstrap) will run a program to install a develoment
+environment on Linux. See the comments in that script for details.
+
 ## License
 
 Copyright (c) 2016-2017 Nathan L Smith

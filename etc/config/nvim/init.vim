@@ -67,6 +67,9 @@ let g:ctrlp_cmd = 'CtrlPMRUFiles'
 " Git
 autocmd Filetype gitcommit setlocal spell textwidth=72
 
+" JavaScript
+let g:neomake_javascript_enabled_makers = ['eslint']
+
 " Neomake
 autocmd! BufWritePost * Neomake
 
