@@ -1,0 +1,6 @@
+Host *
+  ForwardAgent yes
+  ServerAliveInterval 120
+  IdentityFile ~/.ssh/id_rsa
+  AddKeysToAgent yes
+  UseKeychain yes

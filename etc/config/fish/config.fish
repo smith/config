@@ -3,7 +3,11 @@
 set -gx EDITOR nvim
 
 # Paths
-set -gx GOPATH $HOME/go
+set -gx GOPATH $HOME/.go
+set -gx PATH $GOPATH/bin $PATH
+set -gx NODE_PATH $PWD/node_modules $HOME/.node_modules \
+                  /usr/local/share/npm/lib/node_modules \
+                  $NODE_PATH
 
 mkdir -pv \
     "$GOPATH/bin" \
@@ -21,6 +25,11 @@ set -gx NODE_PATH \
     $PWD/node_modules \
     $HOME/.node_modules \
     $NODE_PATH
+
+# Ruby bin path
+if which ruby > /dev/null
+  set -gx PATH (ruby -rubygems -e 'puts Gem.user_dir')/bin $PATH
+end
 
 # rbenv
 set -gx RBENV_ROOT $HOME/.rbenv
@@ -84,7 +93,46 @@ if test (which bass > /dev/null; and test -e ~/.nvm/nvm.sh)
 end
 
 # Visual Studio Code
-#function code
-  #set VSCODE_CWD "$PWD"
-  #open -n -b "com.microsoft.VSCode" --args $argv
-#end
+function code
+  set VSCODE_CWD "$PWD"
+  open -n -b "com.microsoft.VSCode" --args $argv
+end
+
+# SSH Agent setup. Taken from https://gist.github.com/gerbsen/5fd8aa0fde87ac7a2cae
+setenv SSH_ENV $HOME/.ssh/environment
+
+function start_agent
+    echo "Initializing new SSH agent ..."
+    ssh-agent -c | sed 's/^echo/#echo/' > $SSH_ENV
+    echo "succeeded"
+    chmod 600 $SSH_ENV
+    . $SSH_ENV > /dev/null
+    ssh-add
+end
+
+function test_identities
+    ssh-add -l | grep "The agent has no identities" > /dev/null
+    if [ $status -eq 0 ]
+         ssh-add
+         if [ $status -eq 2 ]
+             start_agent
+         end
+    end
+end
+
+if [ -n "$SSH_AGENT_PID" ]
+    ps -ef | grep $SSH_AGENT_PID | grep ssh-agent > /dev/null
+    if [ $status -eq 0 ]
+         test_identities
+    end
+else
+    if [ -f $SSH_ENV ]
+         . $SSH_ENV > /dev/null
+    end
+    ps -ef | grep $SSH_AGENT_PID | grep -v grep | grep ssh-agent > /dev/null
+    if [ $status -eq 0 ]
+         test_identities
+    else
+         start_agent
+    end
+end
