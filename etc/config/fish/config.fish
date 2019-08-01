@@ -32,7 +32,12 @@ if which ruby > /dev/null
 end
 
 # rbenv
-set -gx RBENV_ROOT $HOME/.rbenv
+if which rbenv >/dev/null
+    rbenv init - | source
+    set gem_user_dir (ruby -rubygems -e 'puts Gem.user_dir')
+    mkdir -p $gem_user_dir/bin
+    set -gx PATH $gem_user_dir/bin $PATH
+end
 
 # ls/open aliases; set ls colors
 if [ (uname) = "Darwin" ]

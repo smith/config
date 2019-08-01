@@ -35,6 +35,7 @@
   untracked = cyan
 [core]
 	excludesfile = ~/.gitignore
+	ignorecase = false
 [push]
 	default = simple
 [filter "media"]
@@ -43,3 +44,5 @@
 	required = true
 [commit]
 	gpgsign = false
+[branch "master"]
+#	pushRemote = no_push
