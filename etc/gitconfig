@@ -13,6 +13,7 @@
   st = status
   sta = stash
   standup = log --since yesterday --author='Nathan L Smith' --pretty=oneline --branches=* --decorate
+	up = pull --rebase --autostash
 [branch]
   autosetupmerge = true
   autosetuprebase = always
