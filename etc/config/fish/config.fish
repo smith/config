@@ -19,6 +19,7 @@ set -gx PATH \
     $GOPATH/bin \
     $HOME/.rbenv/bin \
     $HOME/.rbenv/shims \
+    $HOME/bin \
     $PATH
 
 set -gx NODE_PATH \
