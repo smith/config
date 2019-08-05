@@ -2,6 +2,7 @@
 
 REPO=`git config --get remote.origin.url | cut -f 2 -d ":" | sed -e 's/\.git$//g' | tr -d '\n'`
 BRANCH=`git rev-parse --abbrev-ref HEAD`
+DOMAIN="$(git config --get remote.origin.url | cut -f 2 -d "@" | cut -f 1 -d ":")"
 
 git push --porcelain --progress --verbose --set-upstream origin $BRANCH
-open "https://github.com/$REPO/compare/$BRANCH?expand=1"
+open "https://$DOMAIN/$REPO/compare/$BRANCH?expand=1"
