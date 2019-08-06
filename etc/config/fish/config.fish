@@ -91,17 +91,11 @@ function ssh
 end
 
 # NVM
-if test (which bass > /dev/null; and test -e ~/.nvm/nvm.sh)
+if type -q bass; and test -e ~/.nvm/nvm.sh
   bass source ~/.nvm/nvm.sh
   function nvm
     bass source ~/.nvm/nvm.sh ';' nvm $argv
   end
-end
-
-# Visual Studio Code
-function code
-  set VSCODE_CWD "$PWD"
-  open -n -b "com.microsoft.VSCode" --args $argv
 end
 
 # SSH Agent setup. Taken from https://gist.github.com/gerbsen/5fd8aa0fde87ac7a2cae
