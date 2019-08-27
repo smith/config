@@ -1,6 +1,6 @@
 # Fish config
 
-set -gx EDITOR nvim
+set -gx EDITOR "code --wait"
 
 # Paths
 set -gx GOPATH $HOME/.go
