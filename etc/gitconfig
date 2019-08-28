@@ -6,6 +6,7 @@
 	user = smith
 [alias]
   d = commit . -m "duh" --no-verify
+  disable-upstream-push = remote set-url --push upstream push_disabled
   br = branch
   ci = commit
   co = checkout
