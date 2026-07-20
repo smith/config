@@ -1,7 +1,7 @@
 [user]
-	email = smith@nlsmith.com
+	email = nathan.smith@elastic.co
 	name = Nathan L Smith
-	signingkey = 04A6D643
+  signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAeMFlrtsME0bcNbkiiQZgFdMNRD69ordSCWtj3pyuoI
 [github]
 	user = smith
 [alias]
@@ -12,6 +12,7 @@
   co = checkout
   di = diff
   lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+  pr = 
   st = status
   sta = stash
   standup = log --since yesterday --author='Nathan L Smith' --pretty=oneline --branches=* --decorate
@@ -39,13 +40,21 @@
 [core]
 	excludesfile = ~/.gitignore
 	ignorecase = false
+	symlinks = false
 [push]
+	autoSetupRemote = true
 	default = simple
 [filter "media"]
 	clean = git media clean %f
 	smudge = git media smudge %f
 	required = true
 [commit]
-	gpgsign = false
+	gpgsign = true
 [branch "master"]
 #	pushRemote = no_push
+[gpg]
+	format = ssh
+[gpg "ssh"]
+	program = /Applications/1Password.app/Contents/MacOS/op-ssh-sign
+[init]
+	defaultBranch = main
