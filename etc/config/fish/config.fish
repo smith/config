@@ -94,10 +94,10 @@ set __fish_git_prompt_char_dirtystate '*'
 function fish_right_prompt; __fish_git_prompt; end
 
 # NVM
-if type -q bass; and test -e ~/.nvm/nvm.sh
-  bass source ~/.nvm/nvm.sh
+if type -q bass; and test -e /opt/homebrew/opt/nvm/nvm.sh
+  bass source /opt/homebrew/opt/nvm/nvm.sh
   function nvm
-    bass source ~/.nvm/nvm.sh ';' nvm $argv
+    bass source /opt/homebrew/opt/nvm/nvm.sh ';' nvm $argv
   end
 end
 test -f "/Library/Scripts/elastic-env.fish" && source "/Library/Scripts/elastic-env.fish"
