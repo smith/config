@@ -1,4 +1,5 @@
 brew "coreutils"
+brew "direnv"
 brew "findutils"
 brew "fish"
 brew "gh"

@@ -8,6 +8,10 @@ My configuration files. Includes config files for [Neovim](https://neovim.io),
 `./bin/install` will symlink the files into their respective locations in your
 home directory.
 
+### Homebrew
+
+If you have Homebrew, you can run `brew bundle` from this directory to install the programs from the Brewfile.
+
 ## License
 
 Copyright (c) 2016-2017 Nathan L Smith
