@@ -13,3 +13,5 @@ dump.rdb
 mkmf.log
 npm-debug.log
 tags
+
+**/.claude/settings.local.json

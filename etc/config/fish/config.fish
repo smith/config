@@ -108,3 +108,5 @@ test -f /opt/homebrew/share/google-cloud-sdk/path.fish.inc; and source /opt/home
 
 # Created by `pipx` on 2025-05-04 04:26:10
 set PATH $PATH /Users/smith/.local/bin
+
+mise activate fish | source
