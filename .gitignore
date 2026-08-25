@@ -1,6 +1,0 @@
-vimfiles/.VimballRecord
-vimfiles/.netrwhist
-vimfiles/bundle/*
-!extra/ssh/config.d/main
-extra/ssh/config.d/*
-results/

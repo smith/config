@@ -1,16 +1,21 @@
 # config
 
-My configuration files. Includes config files for [Neovim](https://neovim.io),
-[fish shell](https://fishshell.com), and more.
+My configuration files.
 
-## Setup
+## New mac setup
 
-`./bin/install` will symlink the files into their respective locations in your
-home directory.
+* `xcode-select --install`
+* Clone this repo: `git clone https://github.com/smith/config`
+* [Install homebrew](https://brew.sh)
 
 ### Homebrew
 
 If you have Homebrew, you can run `brew bundle` from this directory to install the programs from the Brewfile.
+
+## Installation
+
+`./bin/install` will symlink the files into their respective locations in your
+home directory.
 
 ## License
 
