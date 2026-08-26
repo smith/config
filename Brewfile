@@ -1,7 +1,10 @@
+tap "hashicorp/tap"
+
 brew "coreutils"
 brew "direnv"
 brew "findutils"
 brew "gh"
+brew "hashicorp/tap/vault"
 brew "minikube"
 brew "nvm"
 brew "shellcheck"
@@ -19,3 +22,4 @@ cask "pixelsnap"
 cask "slack"
 cask "visual-studio-code"
 cask "zoom"
+
