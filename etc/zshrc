@@ -1,5 +1,6 @@
 PS1="%F{green}%~%f %# "
 
+export EDITOR="code --wait"
 export PATH="$HOME/bin:$PATH"
 
 export NVM_DIR="$HOME/.nvm"
