@@ -5,6 +5,8 @@ brew "gh"
 brew "minikube"
 brew "nvm"
 brew "shellcheck"
+brew "zsh-autosuggestions"
+brew "zsh-syntax-highlighting"
 
 cask "1password"
 # cask "cleanshot" # Homebrew installs Cleanshot X but I have 2.x
@@ -16,3 +18,4 @@ cask "microsoft-edge"
 cask "pixelsnap"
 cask "slack"
 cask "visual-studio-code"
+cask "zoom"
