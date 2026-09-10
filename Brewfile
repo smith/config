@@ -1,13 +1,17 @@
 tap "hashicorp/tap"
+tap "elastic/oblt-cli"
 
 brew "coreutils"
 brew "direnv"
+brew "elastic/oblt-cli/oblt-cli"
 brew "findutils"
 brew "gh"
 brew "hashicorp/tap/vault"
 brew "minikube"
 brew "nvm"
+brew "ollama"
 brew "shellcheck"
+brew "uv"
 brew "zsh-autosuggestions"
 brew "zsh-syntax-highlighting"
 
