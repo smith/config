@@ -1,5 +1,7 @@
 PS1="%F{green}%~%f %# "
 
+alias ls='ls -F --color'
+
 export EDITOR="code --wait"
 export PATH="$HOME/bin:$PATH"
 
